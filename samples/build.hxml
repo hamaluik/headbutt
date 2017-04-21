@@ -1,0 +1,7 @@
+-cp twod_collision
+-main Main
+
+-cp ../src/
+-lib glm
+
+--interp

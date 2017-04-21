@@ -1,0 +1,9 @@
+-cp src
+
+headbutt.twod.GJK2D
+headbutt.shapes.Circle
+headbutt.shapes.Polygon2D
+
+-lib glm
+
+-js bin/headbutt.js
