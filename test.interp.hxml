@@ -1,0 +1,7 @@
+-lib buddy
+-lib glm
+-cp test
+-cp src
+-D testing
+-main TestMain
+--interp
