@@ -1,8 +1,8 @@
-package headbutt.twod;
+package headbutt;
 
 import glm.Vec3;
 using glm.Vec2;
-import headbutt.twod.Shape2D;
+import headbutt.Shape2D;
 
 enum EvolveResult {
     NoIntersection;
@@ -10,7 +10,7 @@ enum EvolveResult {
     StillEvolving;
 }
 
-class GJK2D {
+class Headbutt2D {
     private var vertices:Array<Vec2>;
     private var direction:Vec2;
     private var shapeA:Shape2D;
@@ -18,10 +18,16 @@ class GJK2D {
 
     public function new() {}
 
+    private function calculateSupport(direction:Vec2):Vec2 {
+        var oppositeDirection:Vec2 = direction.multiplyScalar(-1, new Vec2());
+        var newVertex:Vec2 = shapeA.support(direction) - shapeB.support(oppositeDirection);
+        return newVertex;
+    }
+
     private function addSupport(direction:Vec2):Bool {
-        var newVertex:Vec2 = shapeB.support(direction) - shapeA.support(direction);
+        var newVertex:Vec2 = calculateSupport(direction);
         vertices.push(newVertex);
-        return Vec2.dot(direction, newVertex) > 0;
+        return Vec2.dot(direction, newVertex) >= 0;
     }
 
     function tripleProduct(a:Vec2, b:Vec2, c:Vec2):Vec2 {

@@ -1,6 +1,7 @@
 -cp src
 
-headbutt.twod.GJK2D
+headbutt.Headbutt2D
+headbutt.Shape2D
 headbutt.shapes.Circle
 headbutt.shapes.Polygon2D
 

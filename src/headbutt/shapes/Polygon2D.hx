@@ -1,7 +1,7 @@
 package headbutt.shapes;
 
 using glm.Vec2;
-import headbutt.twod.Shape2D;
+import headbutt.Shape2D;
 
 class Polygon2D implements Shape2D {
     public var vertices:Array<Vec2>;

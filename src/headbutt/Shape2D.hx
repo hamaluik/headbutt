@@ -1,4 +1,4 @@
-package headbutt.twod;
+package headbutt;
 
 import glm.Vec2;
 
