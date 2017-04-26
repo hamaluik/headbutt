@@ -163,8 +163,41 @@ class TestHeadbutt2D extends BuddySuite {
                 result.should.be(true);
 
                 var intersection:Vec2 = hb.calculateIntersection();
-                trace('intersection:');
-                trace(intersection);
+                intersection.x.should.beCloseTo(0.75);
+                intersection.y.should.beCloseTo(0);
+            });
+
+            it('should calculate the intersection of two circles', {
+                var circA:Circle = new Circle(new Vec2(0, 0), 1);
+                var circB:Circle = new Circle(new Vec2(1, 1), 0.5);
+
+                var result:Bool = hb.test(circA, circB);
+                result.should.be(true);
+                
+                var intersection:Vec2 = hb.calculateIntersection();
+
+                // calculate the intersection manually
+                var ix:Float = circA.radius * Math.cos(Math.PI / 4) - (circB.radius * Math.cos(5 * Math.PI / 4) + circB.centre.x);
+                var iy:Float = circA.radius * Math.sin(Math.PI / 4) - (circB.radius * Math.sin(5 * Math.PI / 4) + circB.centre.y);
+                intersection.x.should.beCloseTo(ix);
+                intersection.y.should.beCloseTo(iy);
+            });
+
+            it('should calculate the intersection of a line and square', {
+                var square:Polygon2D = new Polygon2D([
+                    new Vec2(-1, -1), new Vec2(1, -1),
+                    new Vec2(1, 1), new Vec2(-1, 1)
+                ]);
+                var line:Polygon2D = new Polygon2D([
+                    new Vec2(0.5, 0.5), new Vec2(3, 3)
+                ]);
+
+                var result:Bool = hb.test(square, line);
+                result.should.be(true);
+
+                var intersection:Vec2 = hb.calculateIntersection();
+                intersection.x.should.be(0.5);
+                intersection.y.should.be(0.5);
             });
         });
     }

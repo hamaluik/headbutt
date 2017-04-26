@@ -37,8 +37,8 @@ class Headbutt2D {
 
     private function calculateSupport(direction:Vec2):Vec2 {
         var oppositeDirection:Vec2 = direction.multiplyScalar(-1, new Vec2());
-        var newVertex:Vec2 = shapeA.support(direction);
-        newVertex.subtractVec(oppositeDirection, newVertex);
+        var newVertex:Vec2 = shapeA.support(direction).copy(new Vec2());
+        newVertex.subtractVec(shapeB.support(oppositeDirection), newVertex);
         return newVertex;
     }
 
@@ -176,7 +176,7 @@ class Headbutt2D {
         var winding:PolygonWinding = (e0 + e1 + e2) >= 0 ? PolygonWinding.Clockwise : PolygonWinding.CounterClockwise;
 
         var intersection:Vec2 = new Vec2();
-        for(i in 0...20) {
+        for(i in 0...32) {
             var edge:Edge = findClosestEdge(winding);
             var support:Vec2 = calculateSupport(edge.normal);
             var distance:Float = support.dot(edge.normal);
