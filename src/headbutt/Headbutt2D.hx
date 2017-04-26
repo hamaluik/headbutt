@@ -10,6 +10,23 @@ enum EvolveResult {
     StillEvolving;
 }
 
+enum PolygonWinding {
+    Clockwise;
+    CounterClockwise;
+}
+
+class Edge {
+    public var distance:Float;
+    public var normal:Vec2;
+    public var index:Int;
+
+    public function new(distance:Float, normal:Vec2, index:Int) {
+        this.distance = distance;
+        this.normal = normal;
+        this.index = index;
+    }
+}
+
 class Headbutt2D {
     private var vertices:Array<Vec2>;
     private var direction:Vec2;
@@ -20,7 +37,8 @@ class Headbutt2D {
 
     private function calculateSupport(direction:Vec2):Vec2 {
         var oppositeDirection:Vec2 = direction.multiplyScalar(-1, new Vec2());
-        var newVertex:Vec2 = shapeA.support(direction) - shapeB.support(oppositeDirection);
+        var newVertex:Vec2 = shapeA.support(direction);
+        newVertex.subtractVec(oppositeDirection, newVertex);
         return newVertex;
     }
 
@@ -114,5 +132,66 @@ class Headbutt2D {
             result = evolveSimplex();
         }
         return result == EvolveResult.FoundIntersection;
+    }
+
+    private function findClosestEdge(winding:PolygonWinding):Edge {
+        var closestDistance:Float = Math.POSITIVE_INFINITY;
+        var closestNormal:Vec2 = new Vec2();
+        var closestIndex:Int = 0;
+        var line:Vec2 = new Vec2();
+        for(i in 0...vertices.length) {
+            var j:Int = i + 1;
+            if(j >= vertices.length) j = 0;
+
+            vertices[j].copy(line);
+            line.subtractVec(vertices[i], line);
+
+            var norm:Vec2 = switch(winding) {
+                case PolygonWinding.Clockwise:
+                    new Vec2(line.y, -line.x);
+                case PolygonWinding.CounterClockwise:
+                    new Vec2(-line.y, line.x);
+                case _:
+                    throw 'Invalid polygon winding!';
+            }
+            norm.normalize(norm);
+
+            // calculate how far away the edge is from the origin
+            var dist:Float = norm.dot(vertices[i]);
+            if(dist < closestDistance) {
+                closestDistance = dist;
+                closestNormal = norm;
+                closestIndex = j;
+            }
+        }
+
+        return new Edge(closestDistance, closestNormal, closestIndex);
+    }
+
+    public function calculateIntersection():Vec2 {
+        // first up: calculate the winding of the existing simplex
+        var e0:Float = (vertices[1].x - vertices[0].x) * (vertices[1].y + vertices[0].y);
+        var e1:Float = (vertices[2].x - vertices[1].x) * (vertices[2].y + vertices[1].y);
+        var e2:Float = (vertices[0].x - vertices[2].x) * (vertices[0].y + vertices[2].y);
+        var winding:PolygonWinding = (e0 + e1 + e2) >= 0 ? PolygonWinding.Clockwise : PolygonWinding.CounterClockwise;
+
+        var intersection:Vec2 = new Vec2();
+        for(i in 0...20) {
+            var edge:Edge = findClosestEdge(winding);
+            var support:Vec2 = calculateSupport(edge.normal);
+            var distance:Float = support.dot(edge.normal);
+
+            intersection = edge.normal.copy(intersection);
+            intersection.multiplyScalar(distance, intersection);
+
+            if(Math.abs(distance - edge.distance) <= 0.00001) {
+                return intersection;
+            }
+            else {
+                vertices.insert(edge.index, support);
+            }
+        }
+
+        return intersection;
     }
 }

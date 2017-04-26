@@ -18,6 +18,7 @@ class Polygon2D implements Shape2D {
             count += 1.0;
         }
         c.multiplyScalar(1.0 / count, c);
+
         return c;
     }
 

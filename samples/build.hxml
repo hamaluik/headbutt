@@ -4,4 +4,4 @@
 -cp ../src/
 -lib glm
 
---interp
+-js bin/twod_collision.js

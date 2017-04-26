@@ -9,9 +9,9 @@ import glm.Vec2;
 class TestHeadbutt2D extends BuddySuite {
     public function new() {
         describe('Using Headbutt2D', {
-            var gjk:Headbutt2D;
+            var hb:Headbutt2D;
             beforeEach({
-                gjk = new Headbutt2D();
+                hb = new Headbutt2D();
             });
 
             it('should calculate Minkowski difference supports with polygons', {
@@ -23,8 +23,8 @@ class TestHeadbutt2D extends BuddySuite {
                     new Vec2(-14, -14), new Vec2(-5, -16), new Vec2(-12, -8)
                 ]);
 
-                gjk.shapeA = shapeA;
-                gjk.shapeB = shapeB;
+                hb.shapeA = shapeA;
+                hb.shapeB = shapeB;
 
                 var verts:Array<Vec2> = new Array<Vec2>();
                 for(a in shapeA.vertices) {
@@ -41,7 +41,7 @@ class TestHeadbutt2D extends BuddySuite {
                 ];
                 for(dir in dirs) {
                     var mdSupport:Vec2 = md.support(dir);
-                    var support:Vec2 = gjk.calculateSupport(dir);
+                    var support:Vec2 = hb.calculateSupport(dir);
                     support.x.should.be(mdSupport.x);
                     support.y.should.be(mdSupport.y);
                 }
@@ -56,7 +56,7 @@ class TestHeadbutt2D extends BuddySuite {
                     new Vec2(-14, -14), new Vec2(-5, -16), new Vec2(-12, -8)
                 ]);
 
-                var result:Bool = gjk.test(shapeA, shapeB);
+                var result:Bool = hb.test(shapeA, shapeB);
                 result.should.be(true);
             });
 
@@ -69,7 +69,7 @@ class TestHeadbutt2D extends BuddySuite {
                     new Vec2(-9, -14), new Vec2(0, -16), new Vec2(-7, -8)
                 ]);
 
-                var result:Bool = gjk.test(shapeA, shapeB);
+                var result:Bool = hb.test(shapeA, shapeB);
                 result.should.be(false);
             });
 
@@ -82,8 +82,8 @@ class TestHeadbutt2D extends BuddySuite {
                     new Vec2(-14, -14), new Vec2(-5, -16), new Vec2(-12, -8)
                 ]);
 
-                var resultA:Bool = gjk.test(shapeA, shapeB);
-                var resultB:Bool = gjk.test(shapeB, shapeA);
+                var resultA:Bool = hb.test(shapeA, shapeB);
+                var resultB:Bool = hb.test(shapeB, shapeA);
                 resultA.should.be(true);
                 resultB.should.be(true);
             });
@@ -93,7 +93,7 @@ class TestHeadbutt2D extends BuddySuite {
                     new Vec2(-18, -18), new Vec2(-10, -18),
                     new Vec2(-10, -13), new Vec2(-18, -13)
                 ]);
-                var result:Bool = gjk.test(shapeA, shapeA);
+                var result:Bool = hb.test(shapeA, shapeA);
                 result.should.be(true);
             });
 
@@ -105,7 +105,7 @@ class TestHeadbutt2D extends BuddySuite {
                     new Vec2(-1, 1), new Vec2(1, -1)
                 ]);
 
-                var result:Bool = gjk.test(lineA, lineB);
+                var result:Bool = hb.test(lineA, lineB);
                 result.should.be(true);
             });
 
@@ -118,7 +118,7 @@ class TestHeadbutt2D extends BuddySuite {
                     new Vec2(-1, -1), new Vec2(1, 1)
                 ]);
 
-                var result:Bool = gjk.test(shapeA, lineA);
+                var result:Bool = hb.test(shapeA, lineA);
                 result.should.be(true);
             });
 
@@ -131,8 +131,8 @@ class TestHeadbutt2D extends BuddySuite {
                     new Vec2(-5, -5), new Vec2(-5, 5)
                 ]);
 
-                var resultA:Bool = gjk.test(circ, lineA);
-                var resultB:Bool = gjk.test(circ, lineB);
+                var resultA:Bool = hb.test(circ, lineA);
+                var resultB:Bool = hb.test(circ, lineB);
 
                 resultA.should.be(true);
                 resultB.should.be(false);
@@ -140,13 +140,31 @@ class TestHeadbutt2D extends BuddySuite {
 
             it('should detect collisions between a polygon and a circle', {
                 var circ:Circle = new Circle(new Vec2(0.25, 0), 1);
-                var cube:Polygon2D = new Polygon2D([
+                var square:Polygon2D = new Polygon2D([
                     new Vec2(-1, -1), new Vec2(1, -1),
                     new Vec2(1, 1), new Vec2(-1, 1)
                 ]);
 
-                var result:Bool = gjk.test(circ, cube);
+                var result:Bool = hb.test(circ, square);
                 result.should.be(true);
+            });
+
+            it('should calculate the intersection of two boxes', {
+                var squareA:Polygon2D = new Polygon2D([
+                    new Vec2(-1, -1), new Vec2(1, -1),
+                    new Vec2(1, 1), new Vec2(-1, 1)
+                ]);
+                var squareB:Polygon2D = new Polygon2D([
+                    new Vec2(0.25, -1), new Vec2(2.75, -1),
+                    new Vec2(2.75, 1), new Vec2(0.25, 1)
+                ]);
+
+                var result:Bool = hb.test(squareA, squareB);
+                result.should.be(true);
+
+                var intersection:Vec2 = hb.calculateIntersection();
+                trace('intersection:');
+                trace(intersection);
             });
         });
     }
