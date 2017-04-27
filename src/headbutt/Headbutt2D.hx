@@ -166,8 +166,14 @@ class Headbutt2D {
         return new Edge(closestDistance, closestNormal, closestIndex);
     }
 
-    public function calculateIntersection():Vec2 {
-        // first up: calculate the winding of the existing simplex
+    public function intersect(shapeA:Shape2D, shapeB:Shape2D):Null<Vec2> {
+        // first, calculate the base simplex
+        if(!test(shapeA, shapeB)) {
+            // if we're not intersecting, return null
+            return null;
+        }
+
+        // calculate the winding of the existing simplex
         var e0:Float = (vertices[1].x - vertices[0].x) * (vertices[1].y + vertices[0].y);
         var e1:Float = (vertices[2].x - vertices[1].x) * (vertices[2].y + vertices[1].y);
         var e2:Float = (vertices[0].x - vertices[2].x) * (vertices[0].y + vertices[2].y);

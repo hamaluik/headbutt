@@ -159,10 +159,7 @@ class TestHeadbutt2D extends BuddySuite {
                     new Vec2(2.75, 1), new Vec2(0.25, 1)
                 ]);
 
-                var result:Bool = hb.test(squareA, squareB);
-                result.should.be(true);
-
-                var intersection:Vec2 = hb.calculateIntersection();
+                var intersection:Vec2 = hb.intersect(squareA, squareB);
                 intersection.x.should.beCloseTo(0.75);
                 intersection.y.should.beCloseTo(0);
             });
@@ -170,11 +167,8 @@ class TestHeadbutt2D extends BuddySuite {
             it('should calculate the intersection of two circles', {
                 var circA:Circle = new Circle(new Vec2(0, 0), 1);
                 var circB:Circle = new Circle(new Vec2(1, 1), 0.5);
-
-                var result:Bool = hb.test(circA, circB);
-                result.should.be(true);
                 
-                var intersection:Vec2 = hb.calculateIntersection();
+                var intersection:Vec2 = hb.intersect(circA, circB);
 
                 // calculate the intersection manually
                 var ix:Float = circA.radius * Math.cos(Math.PI / 4) - (circB.radius * Math.cos(5 * Math.PI / 4) + circB.centre.x);
@@ -192,10 +186,7 @@ class TestHeadbutt2D extends BuddySuite {
                     new Vec2(0.5, 0.5), new Vec2(3, 3)
                 ]);
 
-                var result:Bool = hb.test(square, line);
-                result.should.be(true);
-
-                var intersection:Vec2 = hb.calculateIntersection();
+                var intersection:Vec2 = hb.intersect(square, line);
                 intersection.x.should.be(0.5);
                 intersection.y.should.be(0.5);
             });
@@ -209,10 +200,7 @@ class TestHeadbutt2D extends BuddySuite {
                     new Vec2(10, 2), new Vec2(7, 3)
                 ]);
 
-                var result:Bool = hb.test(pa, pb);
-                result.should.be(true);
-
-                var intersection:Vec2 = hb.calculateIntersection();
+                var intersection:Vec2 = hb.intersect(pa, pb);
                 var length:Float = intersection.length();
                 Vec2.normalize(intersection, intersection);
 
