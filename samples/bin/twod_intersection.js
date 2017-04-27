@@ -19,7 +19,6 @@ HxOverrides.remove = function(a,obj) {
 var Main = function() { };
 Main.__name__ = true;
 Main.main = function() {
-	Main.circVelocity = Main.circSpeed;
 	var canvas = window.document.getElementById("canvas");
 	canvas.width = canvas.clientWidth;
 	canvas.height = canvas.clientHeight;
@@ -30,19 +29,15 @@ Main.main = function() {
 	this1[1] = 100;
 	Main.mouseCirc = new headbutt_shapes_Circle(this1,16);
 	var this2 = new Float32Array(4);
-	this2[0] = 10;
-	this2[1] = 10;
+	this2[0] = 110;
+	this2[1] = 55;
 	var this3 = new Float32Array(4);
-	this3[0] = 100;
-	this3[1] = 25;
+	this3[0] = 200;
+	this3[1] = 62;
 	var this4 = new Float32Array(4);
-	this4[0] = 50;
-	this4[1] = 75;
+	this4[0] = 150;
+	this4[1] = 120;
 	Main.poly = new headbutt_shapes_Polygon2D([this2,this3,this4]);
-	var this5 = new Float32Array(4);
-	this5[0] = 100;
-	this5[1] = 150;
-	Main.circ = new headbutt_shapes_Circle(this5,32);
 	Main.hb = new headbutt_Headbutt2D();
 	canvas.addEventListener("mousemove",Main.onMouseMove);
 	canvas.addEventListener("touchstart",Main.onTouch);
@@ -63,25 +58,21 @@ Main.moveCircle = function(x,y) {
 Main.draw = function(ts) {
 	var dt = (ts - Main.lastTime) / 1000;
 	Main.lastTime = ts;
-	var _g = Main.circ.centre;
-	_g[0] += Main.circVelocity * dt;
-	if(Main.circ.centre[0] < Main.circ.radius) {
-		Main.circ.centre[0] = Main.circ.radius;
-		Main.circVelocity = Main.circSpeed;
-	} else if(Main.circ.centre[0] > Main.ctx.canvas.clientWidth - Main.circ.radius) {
-		Main.circ.centre[0] = Main.ctx.canvas.clientWidth - Main.circ.radius;
-		Main.circVelocity = -Main.circSpeed;
+	var intersection = Main.hb.intersect(Main.poly,Main.mouseCirc);
+	if(intersection != null) {
+		var a = Main.mouseCirc.centre;
+		var dest = Main.mouseCirc.centre;
+		dest[0] = a[0] + intersection[0];
+		dest[1] = a[1] + intersection[1];
 	}
-	Main.intersectingPoly = Main.hb.test(Main.poly,Main.mouseCirc);
-	Main.intersectingCirc = Main.hb.test(Main.circ,Main.mouseCirc);
 	Main.ctx.canvas.width = Main.ctx.canvas.clientWidth;
 	Main.ctx.canvas.height = Main.ctx.canvas.clientHeight;
 	Main.ctx.clearRect(0,0,Main.ctx.canvas.clientWidth,Main.ctx.canvas.clientHeight);
 	Main.ctx.beginPath();
 	Main.ctx.moveTo(Main.poly.vertices[0][0],Main.poly.vertices[0][1]);
 	var _g1 = 1;
-	var _g2 = Main.poly.vertices.length;
-	while(_g1 < _g2) {
+	var _g = Main.poly.vertices.length;
+	while(_g1 < _g) {
 		var i = _g1++;
 		Main.ctx.lineTo(Main.poly.vertices[i][0],Main.poly.vertices[i][1]);
 	}
@@ -92,11 +83,8 @@ Main.draw = function(ts) {
 	Main.ctx.lineCap = "round";
 	Main.ctx.stroke();
 	Main.ctx.beginPath();
-	Main.ctx.arc(Main.circ.centre[0],Main.circ.centre[1],Main.circ.radius,0,Math.PI * 2);
-	Main.ctx.stroke();
-	Main.ctx.beginPath();
 	Main.ctx.arc(Main.mouseCirc.centre[0],Main.mouseCirc.centre[1],Main.mouseCirc.radius,0,Math.PI * 2);
-	Main.ctx.fillStyle = Main.intersectingPoly || Main.intersectingCirc ? "#46B39D" : "#DE5B49";
+	Main.ctx.fillStyle = "#46B39D";
 	Main.ctx.fill();
 	window.requestAnimationFrame(Main.draw);
 };
@@ -2609,12 +2597,11 @@ if(ArrayBuffer.prototype.slice == null) {
 var Float32Array = $global.Float32Array || js_html_compat_Float32Array._new;
 var Uint8Array = $global.Uint8Array || js_html_compat_Uint8Array._new;
 Main.lastTime = 0;
-Main.circSpeed = 30;
-Main.intersectingPoly = false;
-Main.intersectingCirc = false;
 glm_GLM.EPSILON = 0.0000001;
 js_Boot.__toStr = ({ }).toString;
 js_html_compat_Float32Array.BYTES_PER_ELEMENT = 4;
 js_html_compat_Uint8Array.BYTES_PER_ELEMENT = 1;
 Main.main();
 })(typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);
+
+//# sourceMappingURL=twod_intersection.js.map

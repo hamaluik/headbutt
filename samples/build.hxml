@@ -1,7 +1,12 @@
--cp twod_collision
--main Main
-
 -cp ../src/
 -lib glm
+-main Main
+--each
 
+-cp twod_collision
 -js bin/twod_collision.js
+
+--next
+-debug
+-cp twod_intersection
+-js bin/twod_intersection.js
