@@ -155,13 +155,13 @@ class TestHeadbutt2D extends BuddySuite {
                     new Vec2(1, 1), new Vec2(-1, 1)
                 ]);
                 var squareB:Polygon2D = new Polygon2D([
-                    new Vec2(0.25, -1), new Vec2(2.75, -1),
-                    new Vec2(2.75, 1), new Vec2(0.25, 1)
+                    new Vec2(0.25, -2.75), new Vec2(2.75, -2.75),
+                    new Vec2(2.75, -0.75), new Vec2(0.25, -0.75)
                 ]);
 
                 var intersection:Vec2 = hb.intersect(squareA, squareB);
-                intersection.x.should.beCloseTo(0.75);
-                intersection.y.should.beCloseTo(0);
+                intersection.x.should.beCloseTo(0);
+                intersection.y.should.beCloseTo(-0.25);
             });
 
             it('should calculate the intersection of two circles', {
@@ -183,12 +183,12 @@ class TestHeadbutt2D extends BuddySuite {
                     new Vec2(1, 1), new Vec2(-1, 1)
                 ]);
                 var line:Polygon2D = new Polygon2D([
-                    new Vec2(0.5, 0.5), new Vec2(3, 3)
+                    new Vec2(0.5, 0), new Vec2(3, 3)
                 ]);
 
                 var intersection:Vec2 = hb.intersect(square, line);
                 intersection.x.should.be(0.5);
-                intersection.y.should.be(0.5);
+                intersection.y.should.be(0);
             });
 
             it('should calculate the intersection of two polygons', {
@@ -206,7 +206,7 @@ class TestHeadbutt2D extends BuddySuite {
 
                 intersection.x.should.beCloseTo(0.62);
                 intersection.y.should.beCloseTo(-0.78);
-                length.should.beCloseTo(0.92);
+                length.should.beCloseTo(0.94);
             });
         });
     }
