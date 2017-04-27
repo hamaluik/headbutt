@@ -199,6 +199,27 @@ class TestHeadbutt2D extends BuddySuite {
                 intersection.x.should.be(0.5);
                 intersection.y.should.be(0.5);
             });
+
+            it('should calculate the intersection of two polygons', {
+                var pa:Polygon2D = new Polygon2D([
+                    new Vec2(4, 11), new Vec2(9, 9), new Vec2(4, 5)
+                ]);
+                var pb:Polygon2D = new Polygon2D([
+                    new Vec2(5, 7), new Vec2(12, 7),
+                    new Vec2(10, 2), new Vec2(7, 3)
+                ]);
+
+                var result:Bool = hb.test(pa, pb);
+                result.should.be(true);
+
+                var intersection:Vec2 = hb.calculateIntersection();
+                var length:Float = intersection.length();
+                Vec2.normalize(intersection, intersection);
+
+                intersection.x.should.beCloseTo(0.62);
+                intersection.y.should.beCloseTo(-0.78);
+                length.should.beCloseTo(0.92);
+            });
         });
     }
 }

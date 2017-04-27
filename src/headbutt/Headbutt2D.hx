@@ -151,8 +151,6 @@ class Headbutt2D {
                     new Vec2(line.y, -line.x);
                 case PolygonWinding.CounterClockwise:
                     new Vec2(-line.y, line.x);
-                case _:
-                    throw 'Invalid polygon winding!';
             }
             norm.normalize(norm);
 
@@ -173,7 +171,9 @@ class Headbutt2D {
         var e0:Float = (vertices[1].x - vertices[0].x) * (vertices[1].y + vertices[0].y);
         var e1:Float = (vertices[2].x - vertices[1].x) * (vertices[2].y + vertices[1].y);
         var e2:Float = (vertices[0].x - vertices[2].x) * (vertices[0].y + vertices[2].y);
-        var winding:PolygonWinding = (e0 + e1 + e2) >= 0 ? PolygonWinding.Clockwise : PolygonWinding.CounterClockwise;
+        var winding:PolygonWinding =
+            if(e0 + e1 + e2 >= 0) PolygonWinding.Clockwise;
+            else PolygonWinding.CounterClockwise;
 
         var intersection:Vec2 = new Vec2();
         for(i in 0...32) {
@@ -184,7 +184,7 @@ class Headbutt2D {
             intersection = edge.normal.copy(intersection);
             intersection.multiplyScalar(distance, intersection);
 
-            if(Math.abs(distance - edge.distance) <= 0.00001) {
+            if(Math.abs(distance - edge.distance) <= 0.000001) {
                 return intersection;
             }
             else {
