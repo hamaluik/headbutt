@@ -1,18 +1,18 @@
 package headbutt.shapes;
 
-using glm.Vec2;
-import headbutt.Shape2D;
+using glm.Vec3;
+import headbutt.Shape3D;
 
-class Polygon2D implements Shape2D {
-    public var centre(get, set):Vec2;
-    public var vertices:Array<Vec2>;
+class Polygon3D implements Shape3D {
+    public var centre(get, set):Vec3;
+    public var vertices:Array<Vec3>;
 
-    public function new(?vertices:Array<Vec2>) {
+    public function new(?vertices:Array<Vec3>) {
         this.vertices = vertices;
     }
 
-    private function get_centre():Vec2 {
-        var c:Vec2 = new Vec2();
+    private function get_centre():Vec3 {
+        var c:Vec3 = new Vec3();
         var count:Float = 0.0;
         for(v in vertices) {
             c.addVec(v, c);
@@ -23,8 +23,8 @@ class Polygon2D implements Shape2D {
         return c;
     }
 
-    private function set_centre(c:Vec2):Vec2 {
-        var diff:Vec2 = centre;
+    private function set_centre(c:Vec3):Vec3 {
+        var diff:Vec3 = centre;
         c.subtractVec(diff, diff);
         for(vert in vertices) {
             vert.addVec(diff, vert);
@@ -32,12 +32,12 @@ class Polygon2D implements Shape2D {
         return c;
     }
 
-    public function support(direction:Vec2):Vec2 {
+    public function support(direction:Vec3):Vec3 {
         var furthestDistance:Float = Math.NEGATIVE_INFINITY;
-        var furthestVertex:Vec2 = null;
+        var furthestVertex:Vec3 = null;
 
         for(v in vertices) {
-            var distance:Float = Vec2.dot(v, direction);
+            var distance:Float = Vec3.dot(v, direction);
             if(distance > furthestDistance) {
                 furthestDistance = distance;
                 furthestVertex = v;

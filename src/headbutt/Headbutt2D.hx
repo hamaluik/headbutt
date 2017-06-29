@@ -4,17 +4,6 @@ import glm.Vec3;
 using glm.Vec2;
 import headbutt.Shape2D;
 
-enum EvolveResult {
-    NoIntersection;
-    FoundIntersection;
-    StillEvolving;
-}
-
-enum PolygonWinding {
-    Clockwise;
-    CounterClockwise;
-}
-
 class Edge {
     public var distance:Float;
     public var normal:Vec2;
@@ -62,7 +51,7 @@ class Headbutt2D {
     private function evolveSimplex():EvolveResult {
         switch(vertices.length) {
             case 0: {
-                direction = shapeB.center() - shapeA.center();
+                direction = shapeB.centre - shapeA.centre;
             }
             case 1: {
                 // flip the direction

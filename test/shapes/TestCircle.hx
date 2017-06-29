@@ -10,7 +10,7 @@ class TestCircle extends BuddySuite {
         describe('Using circles', {
             it('should calculate the center', {
                 var circ:Circle = new Circle(new Vec2(0, 0.5), 0.75);
-                var c:Vec2 = circ.center();
+                var c:Vec2 = circ.centre;
 
                 c.x.should.be(0);
                 c.y.should.be(0.5);
