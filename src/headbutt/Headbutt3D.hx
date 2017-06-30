@@ -33,24 +33,24 @@ class Headbutt3D {
                 direction *= -1;
             }
             case 2: {
-                var b:Vec3 = vertices[1];
-                var c:Vec3 = vertices[0];
-                
-                // line cb is the line formed by the first two vertices
-                var cb:Vec3 = b - c;
-                // line c0 is the line from the first vertex to the origin
-                var c0:Vec3 = c * -1;
+                // line ab is the line formed by the first two vertices
+                var ab:Vec3 = vertices[1] - vertices[0];
+                // line a0 is the line from the first vertex to the origin
+                var a0:Vec3 = vertices[0] * -1;
 
                 // use the triple-cross-product to calculate a direction perpendicular
-                // to line cb in the direction of the origin
-                //direction = tripleProduct(cb, c0, cb);
-                var tmp:Vec3 = cb.cross(c0, new Vec3());
-                direction = tmp.cross(cb, direction);
+                // to line ab in the direction of the origin
+                var tmp:Vec3 = ab.cross(a0, new Vec3());
+                direction = tmp.cross(ab, direction);
             }
             case 3: {
-                var l31:Vec3 = vertices[2] - vertices[0];
-                var l21:Vec3 = vertices[1] - vertices[0];
-                direction = l31.cross(l21, new Vec3());
+                var ac:Vec3 = vertices[2] - vertices[0];
+                var ab:Vec3 = vertices[1] - vertices[0];
+                direction = ac.cross(ab, new Vec3());
+
+                // ensure it points toward the origin
+                var a0:Vec3 = vertices[0] * -1;
+                if(direction.dot(a0) < 0) direction *= -1;
             }
             case 4: {
                 // ascii representation of our simplex at this point
