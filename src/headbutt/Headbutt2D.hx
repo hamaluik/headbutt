@@ -22,6 +22,8 @@ class Headbutt2D {
     private var shapeA:Shape2D;
     private var shapeB:Shape2D;
 
+    public var maxIterations:Int = 20;
+
     public function new() {}
 
     private function calculateSupport(direction:Vec2):Vec2 {
@@ -114,8 +116,10 @@ class Headbutt2D {
 
         // do the actual test
         var result:EvolveResult = EvolveResult.StillEvolving;
-        while(result == EvolveResult.StillEvolving) {
+        var iterations:Int = 0;
+        while(iterations < maxIterations && result == EvolveResult.StillEvolving) {
             result = evolveSimplex();
+            iterations++;
         }
         return result == EvolveResult.FoundIntersection;
     }
