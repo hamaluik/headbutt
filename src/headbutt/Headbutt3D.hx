@@ -53,7 +53,66 @@ class Headbutt3D {
                 direction = l31.cross(l21, new Vec3());
             }
             case 4: {
-                // calculate if the simplex contains the origin
+                // ascii representation of our simplex at this point
+                /*
+                                           [D]
+                                          ,|,
+                                        ,7``\'VA,
+                                      ,7`   |, `'VA,
+                                    ,7`     `\    `'VA,
+                                  ,7`        |,      `'VA,
+                                ,7`          `\         `'VA,
+                              ,7`             |,           `'VA,
+                            ,7`               `\       ,..ooOOTK` [C]
+                          ,7`                  |,.ooOOT''`    AV
+                        ,7`            ,..ooOOT`\`           /7
+                      ,7`      ,..ooOOT''`      |,          AV
+                     ,T,..ooOOT''`              `\         /7
+                [A] `'TTs.,                      |,       AV
+                         `'TTs.,                 `\      /7
+                              `'TTs.,             |,    AV
+                                   `'TTs.,        `\   /7
+                                        `'TTs.,    |, AV
+                                             `'TTs.,\/7
+                                                  `'T`
+                                                    [B]
+                */
+
+                // calculate the three edges of interest
+                var da = vertices[3] - vertices[0];
+                var db = vertices[3] - vertices[1];
+                var dc = vertices[3] - vertices[2];
+
+                // and the direction to the origin
+                var d0 = vertices[3] * -1;
+
+                // check triangles a-b-d, b-c-d, and c-a-d
+                var abdNorm:Vec3 = da.cross(db, new Vec3());
+                var bcdNorm:Vec3 = db.cross(dc, new Vec3());
+                var cadNorm:Vec3 = dc.cross(da, new Vec3());
+
+                if(abdNorm.dot(d0) > 0) {
+                    // the origin is on the outside of triangle a-b-d
+                    // eliminate c!
+                    vertices.remove(vertices[2]);
+                    direction = abdNorm;
+                }
+                else if(bcdNorm.dot(d0) > 0) {
+                    // the origin is on the outside of triangle bcd
+                    // eliminate a!
+                    vertices.remove(vertices[0]);
+                    direction = bcdNorm;
+                }
+                else if(cadNorm.dot(d0) > 0) {
+                    // the origin is on the outside of triangle cad
+                    // eliminate b!
+                    vertices.remove(vertices[1]);
+                    direction = cadNorm;
+                }
+                else {
+                    // the origin is inside all of the triangles!
+                    return EvolveResult.FoundIntersection;
+                }
             }
             case _: throw 'Can\'t have simplex with ${vertices.length} verts!';
         }

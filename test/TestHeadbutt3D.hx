@@ -14,10 +14,22 @@ class TestHeadbutt3D extends BuddySuite {
                 hb = new Headbutt3D();
             });
 
-            it('should calculate Minkowski difference supports with polygons', {
-            });
-
             it('should detect collisions for two polygons which overlap', {
+                var a:Polygon3D = new Polygon3D([
+                    new Vec3(-1, -1, -1), new Vec3(-1, -1,  1),
+                    new Vec3(-1,  1, -1), new Vec3(-1,  1,  1),
+                    new Vec3( 1, -1, -1), new Vec3( 1, -1,  1),
+                    new Vec3( 1,  1, -1), new Vec3( 1,  1,  1)
+                ]);
+                var b:Polygon3D = new Polygon3D([
+                    new Vec3(-0.5, -1, -1), new Vec3(-0.5, -1,  1),
+                    new Vec3(-0.5,  1, -1), new Vec3(-0.5,  1,  1),
+                    new Vec3( 0.5, -1, -1), new Vec3( 0.5, -1,  1),
+                    new Vec3( 0.5,  1, -1), new Vec3( 0.5,  1,  1)
+                ]);
+
+                var result:Bool = hb.test(a, b);
+                result.should.be(true);
             });
 
             it('should detect collisions for two spheres which overlap', {
@@ -29,45 +41,52 @@ class TestHeadbutt3D extends BuddySuite {
             });
 
             it('shouldn\'t detect collisions for two polygons which don\'t overlap', {
+                var a:Polygon3D = new Polygon3D([
+                    new Vec3(-1, -1, -1), new Vec3(-1, -1,  1),
+                    new Vec3(-1,  1, -1), new Vec3(-1,  1,  1),
+                    new Vec3( 1, -1, -1), new Vec3( 1, -1,  1),
+                    new Vec3( 1,  1, -1), new Vec3( 1,  1,  1)
+                ]);
+                var b:Polygon3D = new Polygon3D([
+                    new Vec3(-5, -1, -1), new Vec3(-5, -1,  1),
+                    new Vec3(-5,  1, -1), new Vec3(-5,  1,  1),
+                    new Vec3(-4, -1, -1), new Vec3(-4, -1,  1),
+                    new Vec3(-4,  1, -1), new Vec3(-4,  1,  1)
+                ]);
+
+                var result:Bool = hb.test(a, b);
+                result.should.be(false);
             });
 
             it('shouldn\'t detect collisions for two spheres which don\'t overlap', {
-                var sa:Sphere = new Sphere(new Vec3(-1, -0.5, -0.5), 1);
-                var sb:Sphere = new Sphere(new Vec3(0.5, 0.5, 0.5), 1);
+                var sa:Sphere = new Sphere(new Vec3(0, 0, 0), 1);
+                var sb:Sphere = new Sphere(new Vec3(2, 2, 2), 1);
 
                 var result:Bool = hb.test(sa, sb);
                 result.should.be(false);
             });
 
-            it('shouldn\'t matter what order the polygons go in', {
-            });
-
             it('should detect collisions between a shape and itself', {
+                var s:Sphere = new Sphere(new Vec3(0, 0, 0), 1);
+                var result:Bool = hb.test(s, s);
+                result.should.be(true);
             });
 
-            it('should detect collisions between two lines', {
+            it('should detect collisions between a sphere and a polygon', {
+                var s:Sphere = new Sphere(new Vec3(0.5, 0.5, 0.5), 1);
+                var p:Polygon3D = new Polygon3D([
+                    new Vec3(-1, -1, -1), new Vec3(-1, -1,  1),
+                    new Vec3(-1,  1, -1), new Vec3(-1,  1,  1),
+                    new Vec3( 1, -1, -1), new Vec3( 1, -1,  1),
+                    new Vec3( 1,  1, -1), new Vec3( 1,  1,  1)
+                ]);
+                var result:Bool = hb.test(s, p);
+                result.should.be(true);
             });
 
-            it('should detect collisions between a line and a polygon', {
-            });
-
-            it('should detect collisions between a line and a circle', {
-            });
-
-            it('should detect collisions between a polygon and a circle', {
-            });
-
-            it('should calculate the intersection of two boxes', {
-            });
-
-            it('should calculate the intersection of two circles', {
-            });
-
-            it('should calculate the intersection of a line and square', {
-            });
-
-            it('should calculate the intersection of two polygons', {
-            });
+            it('should calculate the intersection of two spheres');
+            it('should calculate the intersection of two polygons');
+            it('should calculate the intersection of a polygon and a sphere');
         });
     }
 }
