@@ -1,7 +1,14 @@
--cp twod_collision
 -main Main
-
 -cp ../src/
 -lib glm
 
+--each
+
+-cp twod_collision
 -js bin/twod_collision.js
+
+--next
+
+-lib threejs
+-cp threed_collision
+-js bin/threed_collision.js

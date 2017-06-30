@@ -19,86 +19,91 @@ HxOverrides.remove = function(a,obj) {
 var Main = function() { };
 Main.__name__ = true;
 Main.main = function() {
-	Main.circVelocity = Main.circSpeed;
+	var hb = new headbutt_Headbutt3D();
 	var canvas = window.document.getElementById("canvas");
-	canvas.width = canvas.clientWidth;
-	canvas.height = canvas.clientHeight;
-	Main.ctx = canvas.getContext("2d",null);
-	window.requestAnimationFrame(Main.draw);
+	var scene = new THREE.Scene();
+	var cubeMat = new THREE.MeshLambertMaterial({ color : 13369344});
+	var cube = new THREE.Mesh(new THREE.BoxGeometry(50,50,50,1,1,1),cubeMat);
+	cube.position.set(0,0,0);
+	scene.add(cube);
 	var this1 = new Float32Array(4);
-	this1[0] = 100;
-	this1[1] = 100;
-	Main.mouseCirc = new headbutt_shapes_Circle(this1,16);
+	this1[0] = -25;
+	this1[1] = -25;
+	this1[2] = -25;
 	var this2 = new Float32Array(4);
-	this2[0] = 10;
-	this2[1] = 10;
+	this2[0] = -25;
+	this2[1] = -25;
+	this2[2] = 25;
 	var this3 = new Float32Array(4);
-	this3[0] = 100;
+	this3[0] = -25;
 	this3[1] = 25;
+	this3[2] = -25;
 	var this4 = new Float32Array(4);
-	this4[0] = 50;
-	this4[1] = 75;
-	Main.poly = new headbutt_shapes_Polygon2D([this2,this3,this4]);
+	this4[0] = -25;
+	this4[1] = 25;
+	this4[2] = 25;
 	var this5 = new Float32Array(4);
-	this5[0] = 100;
-	this5[1] = 150;
-	Main.circ = new headbutt_shapes_Circle(this5,32);
-	Main.hb = new headbutt_Headbutt2D();
-	canvas.addEventListener("mousemove",Main.onMouseMove);
-	canvas.addEventListener("touchstart",Main.onTouch);
-	canvas.addEventListener("touchmove",Main.onTouch);
-};
-Main.onMouseMove = function(evt) {
-	Main.moveCircle(evt.clientX,evt.clientY);
-};
-Main.onTouch = function(evt) {
-	Main.moveCircle(evt.touches[0].clientX,evt.touches[0].clientY);
-	evt.stopPropagation();
-};
-Main.moveCircle = function(x,y) {
-	var rect = Main.ctx.canvas.getBoundingClientRect();
-	Main.mouseCirc.get_centre()[0] = x - rect.left;
-	Main.mouseCirc.get_centre()[1] = y - rect.top;
-};
-Main.draw = function(ts) {
-	var dt = (ts - Main.lastTime) / 1000;
-	Main.lastTime = ts;
-	var _g = Main.circ.get_centre();
-	_g[0] += Main.circVelocity * dt;
-	if(Main.circ.get_centre()[0] < Main.circ.radius) {
-		Main.circ.get_centre()[0] = Main.circ.radius;
-		Main.circVelocity = Main.circSpeed;
-	} else if(Main.circ.get_centre()[0] > Main.ctx.canvas.clientWidth - Main.circ.radius) {
-		Main.circ.get_centre()[0] = Main.ctx.canvas.clientWidth - Main.circ.radius;
-		Main.circVelocity = -Main.circSpeed;
-	}
-	Main.intersectingPoly = Main.hb.test(Main.poly,Main.mouseCirc);
-	Main.intersectingCirc = Main.hb.test(Main.circ,Main.mouseCirc);
-	Main.ctx.canvas.width = Main.ctx.canvas.clientWidth;
-	Main.ctx.canvas.height = Main.ctx.canvas.clientHeight;
-	Main.ctx.clearRect(0,0,Main.ctx.canvas.clientWidth,Main.ctx.canvas.clientHeight);
-	Main.ctx.beginPath();
-	Main.ctx.moveTo(Main.poly.vertices[0][0],Main.poly.vertices[0][1]);
-	var _g1 = 1;
-	var _g2 = Main.poly.vertices.length;
-	while(_g1 < _g2) {
-		var i = _g1++;
-		Main.ctx.lineTo(Main.poly.vertices[i][0],Main.poly.vertices[i][1]);
-	}
-	Main.ctx.lineTo(Main.poly.vertices[0][0],Main.poly.vertices[0][1]);
-	Main.ctx.strokeStyle = "#324D5C";
-	Main.ctx.lineWidth = 4;
-	Main.ctx.lineJoin = "round";
-	Main.ctx.lineCap = "round";
-	Main.ctx.stroke();
-	Main.ctx.beginPath();
-	Main.ctx.arc(Main.circ.get_centre()[0],Main.circ.get_centre()[1],Main.circ.radius,0,Math.PI * 2);
-	Main.ctx.stroke();
-	Main.ctx.beginPath();
-	Main.ctx.arc(Main.mouseCirc.get_centre()[0],Main.mouseCirc.get_centre()[1],Main.mouseCirc.radius,0,Math.PI * 2);
-	Main.ctx.fillStyle = Main.intersectingPoly || Main.intersectingCirc ? "#46B39D" : "#DE5B49";
-	Main.ctx.fill();
-	window.requestAnimationFrame(Main.draw);
+	this5[0] = 25;
+	this5[1] = -25;
+	this5[2] = -25;
+	var this6 = new Float32Array(4);
+	this6[0] = 25;
+	this6[1] = -25;
+	this6[2] = 25;
+	var this7 = new Float32Array(4);
+	this7[0] = 25;
+	this7[1] = 25;
+	this7[2] = -25;
+	var this8 = new Float32Array(4);
+	this8[0] = 25;
+	this8[1] = 25;
+	this8[2] = 25;
+	var cubeShape = new headbutt_shapes_Polygon3D([this1,this2,this3,this4,this5,this6,this7,this8]);
+	var sphere = new THREE.Mesh(new THREE.SphereGeometry(20),new THREE.MeshLambertMaterial({ color : 204}));
+	sphere.position.set(50,0,0);
+	scene.add(sphere);
+	var this9 = new Float32Array(4);
+	this9[0] = 50;
+	this9[1] = 0;
+	this9[2] = 0;
+	var sphereShape = new headbutt_shapes_Sphere(this9,20);
+	var pointLight = new THREE.PointLight(16777215,1,0);
+	pointLight.position.set(100,200,50);
+	scene.add(pointLight);
+	var ambientLight = new THREE.AmbientLight(4210752);
+	scene.add(ambientLight);
+	var camera = new THREE.PerspectiveCamera(70,canvas.clientWidth / canvas.clientHeight,1,1000);
+	camera.position.set(75 * Math.cos(Math.PI / 4),75,75 * Math.sin(Math.PI / 4));
+	camera.lookAt(cube.position);
+	scene.add(camera);
+	var renderer = new THREE.WebGLRenderer({ canvas : canvas});
+	var tmp = window.document.body.clientWidth;
+	renderer.setSize(tmp,window.document.body.clientHeight);
+	renderer.setClearColor(16777215);
+	window.document.body.appendChild(renderer.domElement);
+	var t = 0;
+	var speed = 0.1;
+	var update = null;
+	update = function(f) {
+		window.requestAnimationFrame(update);
+		var update1 = window.document.body.clientWidth;
+		camera.aspect = update1 / window.document.body.clientHeight;
+		var update2 = window.document.body.clientWidth;
+		renderer.setSize(update2,window.document.body.clientHeight);
+		camera.updateProjectionMatrix();
+		sphere.position.x = 50 * Math.sin(2 * Math.PI * t * speed);
+		sphere.position.y = 50 * Math.sin(2 * Math.PI * 2 * t * speed);
+		sphere.position.z = 50 * Math.sin(2 * Math.PI * 4 * t * speed);
+		sphereShape.get_centre()[0] = sphere.position.x;
+		sphereShape.get_centre()[1] = sphere.position.y;
+		sphereShape.get_centre()[2] = sphere.position.z;
+		var collision = hb.test(cubeShape,sphereShape);
+		cubeMat.setValues({ color : collision ? 52224 : 13369344});
+		renderer.render(scene,camera);
+		t += 0.016666666666666666;
+		return true;
+	};
+	update(0);
 };
 Math.__name__ = true;
 var Std = function() { };
@@ -1096,197 +1101,6 @@ glm__$Quat_Quat_$Impl_$.fromEuler = function(x,y,z,dest) {
 	dest[3] = c1 * c2 * c3 - s1 * s2 * s3;
 	return dest;
 };
-var glm__$Vec2_Vec2_$Impl_$ = {};
-glm__$Vec2_Vec2_$Impl_$.__name__ = true;
-glm__$Vec2_Vec2_$Impl_$.get_x = function(this1) {
-	return this1[0];
-};
-glm__$Vec2_Vec2_$Impl_$.set_x = function(this1,v) {
-	return this1[0] = v;
-};
-glm__$Vec2_Vec2_$Impl_$.get_y = function(this1) {
-	return this1[1];
-};
-glm__$Vec2_Vec2_$Impl_$.set_y = function(this1,v) {
-	return this1[1] = v;
-};
-glm__$Vec2_Vec2_$Impl_$.get_i = function(this1) {
-	return this1[0];
-};
-glm__$Vec2_Vec2_$Impl_$.set_i = function(this1,v) {
-	return this1[0] = v;
-};
-glm__$Vec2_Vec2_$Impl_$.get_j = function(this1) {
-	return this1[1];
-};
-glm__$Vec2_Vec2_$Impl_$.set_j = function(this1,v) {
-	return this1[1] = v;
-};
-glm__$Vec2_Vec2_$Impl_$.get = function(this1,key) {
-	return this1[key];
-};
-glm__$Vec2_Vec2_$Impl_$.arrayWrite = function(this1,key,value) {
-	return this1[key] = value;
-};
-glm__$Vec2_Vec2_$Impl_$._new = function(x,y) {
-	if(y == null) {
-		y = 0;
-	}
-	if(x == null) {
-		x = 0;
-	}
-	var this1 = new Float32Array(4);
-	this1[0] = x;
-	this1[1] = y;
-	return this1;
-};
-glm__$Vec2_Vec2_$Impl_$.equals = function(this1,b) {
-	var equal = true;
-	var _g = 0;
-	while(_g < 2) {
-		var i = _g++;
-		if(Math.abs(this1[i] - b[i]) >= glm_GLM.EPSILON) {
-			equal = false;
-			break;
-		}
-	}
-	return equal;
-};
-glm__$Vec2_Vec2_$Impl_$.toString = function(this1) {
-	return "<" + this1[0] + ", " + this1[1] + ">";
-};
-glm__$Vec2_Vec2_$Impl_$.lengthSquared = function(this1) {
-	return this1[0] * this1[0] + this1[1] * this1[1];
-};
-glm__$Vec2_Vec2_$Impl_$.$length = function(this1) {
-	return Math.sqrt(this1[0] * this1[0] + this1[1] * this1[1]);
-};
-glm__$Vec2_Vec2_$Impl_$.copy = function(src,dest) {
-	dest[0] = src[0];
-	dest[1] = src[1];
-	return dest;
-};
-glm__$Vec2_Vec2_$Impl_$.set = function(dest,x,y) {
-	if(y == null) {
-		y = 0;
-	}
-	if(x == null) {
-		x = 0;
-	}
-	dest[0] = x;
-	dest[1] = y;
-	return dest;
-};
-glm__$Vec2_Vec2_$Impl_$.addVec = function(a,b,dest) {
-	dest[0] = a[0] + b[0];
-	dest[1] = a[1] + b[1];
-	return dest;
-};
-glm__$Vec2_Vec2_$Impl_$.subtractVec = function(a,b,dest) {
-	dest[0] = a[0] - b[0];
-	dest[1] = a[1] - b[1];
-	return dest;
-};
-glm__$Vec2_Vec2_$Impl_$.addVecOp = function(a,b) {
-	var this1 = new Float32Array(4);
-	this1[0] = 0;
-	this1[1] = 0;
-	var dest = this1;
-	dest[0] = a[0] + b[0];
-	dest[1] = a[1] + b[1];
-	return dest;
-};
-glm__$Vec2_Vec2_$Impl_$.subtractVecOp = function(a,b) {
-	var this1 = new Float32Array(4);
-	this1[0] = 0;
-	this1[1] = 0;
-	var dest = this1;
-	dest[0] = a[0] - b[0];
-	dest[1] = a[1] - b[1];
-	return dest;
-};
-glm__$Vec2_Vec2_$Impl_$.addScalar = function(a,s,dest) {
-	dest[0] = a[0] + s;
-	dest[1] = a[1] + s;
-	return dest;
-};
-glm__$Vec2_Vec2_$Impl_$.multiplyScalar = function(a,s,dest) {
-	dest[0] = a[0] * s;
-	dest[1] = a[1] * s;
-	return dest;
-};
-glm__$Vec2_Vec2_$Impl_$.addScalarOp = function(a,s) {
-	var this1 = new Float32Array(4);
-	this1[0] = 0;
-	this1[1] = 0;
-	var dest = this1;
-	dest[0] = a[0] + s;
-	dest[1] = a[1] + s;
-	return dest;
-};
-glm__$Vec2_Vec2_$Impl_$.subtractScalarOp = function(a,s) {
-	var s1 = -s;
-	var this1 = new Float32Array(4);
-	this1[0] = 0;
-	this1[1] = 0;
-	var dest = this1;
-	dest[0] = a[0] + s1;
-	dest[1] = a[1] + s1;
-	return dest;
-};
-glm__$Vec2_Vec2_$Impl_$.multiplyScalarOp = function(a,s) {
-	var this1 = new Float32Array(4);
-	this1[0] = 0;
-	this1[1] = 0;
-	var dest = this1;
-	dest[0] = a[0] * s;
-	dest[1] = a[1] * s;
-	return dest;
-};
-glm__$Vec2_Vec2_$Impl_$.divideScalarOp = function(a,s) {
-	var s1 = 1 / s;
-	var this1 = new Float32Array(4);
-	this1[0] = 0;
-	this1[1] = 0;
-	var dest = this1;
-	dest[0] = a[0] * s1;
-	dest[1] = a[1] * s1;
-	return dest;
-};
-glm__$Vec2_Vec2_$Impl_$.distanceSquared = function(a,b) {
-	return (a[0] - b[0]) * (a[0] - b[0]) + (a[1] - b[1]) * (a[1] - b[1]);
-};
-glm__$Vec2_Vec2_$Impl_$.distance = function(a,b) {
-	return Math.sqrt((a[0] - b[0]) * (a[0] - b[0]) + (a[1] - b[1]) * (a[1] - b[1]));
-};
-glm__$Vec2_Vec2_$Impl_$.dot = function(a,b) {
-	return a[0] * b[0] + a[1] * b[1];
-};
-glm__$Vec2_Vec2_$Impl_$.cross = function(a,b,dest) {
-	var this1 = new Float32Array(4);
-	this1[0] = 0;
-	this1[1] = 0;
-	this1[2] = a[0] * b[1] - a[1] * b[0];
-	dest = this1;
-	return dest;
-};
-glm__$Vec2_Vec2_$Impl_$.normalize = function(v,dest) {
-	var length = Math.sqrt(v[0] * v[0] + v[1] * v[1]);
-	var mult = 0;
-	if(length >= glm_GLM.EPSILON) {
-		mult = 1 / length;
-	}
-	dest[0] = v[0] * mult;
-	dest[1] = v[1] * mult;
-	return dest;
-};
-glm__$Vec2_Vec2_$Impl_$.lerp = function(a,b,t,dest) {
-	var a1 = a[0];
-	dest[0] = a1 + t * (b[0] - a1);
-	var a2 = a[1];
-	dest[1] = a2 + t * (b[1] - a2);
-	return dest;
-};
 var glm__$Vec3_Vec3_$Impl_$ = {};
 glm__$Vec3_Vec3_$Impl_$.__name__ = true;
 glm__$Vec3_Vec3_$Impl_$.get_x = function(this1) {
@@ -1817,87 +1631,41 @@ headbutt_EvolveResult.FoundIntersection = ["FoundIntersection",1];
 headbutt_EvolveResult.FoundIntersection.__enum__ = headbutt_EvolveResult;
 headbutt_EvolveResult.StillEvolving = ["StillEvolving",2];
 headbutt_EvolveResult.StillEvolving.__enum__ = headbutt_EvolveResult;
-var headbutt_Edge = function(distance,normal,index) {
-	this.distance = distance;
-	this.normal = normal;
-	this.index = index;
+var headbutt_Headbutt3D = function() {
+	this.maxIterations = 20;
 };
-headbutt_Edge.__name__ = true;
-headbutt_Edge.prototype = {
-	__class__: headbutt_Edge
-};
-var headbutt_Headbutt2D = function() {
-};
-headbutt_Headbutt2D.__name__ = true;
-headbutt_Headbutt2D.prototype = {
+headbutt_Headbutt3D.__name__ = true;
+headbutt_Headbutt3D.prototype = {
 	calculateSupport: function(direction) {
 		var this1 = new Float32Array(4);
 		this1[0] = 0;
 		this1[1] = 0;
+		this1[2] = 0;
 		var dest = this1;
 		dest[0] = direction[0] * -1;
 		dest[1] = direction[1] * -1;
+		dest[2] = direction[2] * -1;
 		var oppositeDirection = dest;
 		var src = this.shapeA.support(direction);
 		var this2 = new Float32Array(4);
 		this2[0] = 0;
 		this2[1] = 0;
+		this2[2] = 0;
 		var dest1 = this2;
 		dest1[0] = src[0];
 		dest1[1] = src[1];
+		dest1[2] = src[2];
 		var newVertex = dest1;
 		var b = this.shapeB.support(oppositeDirection);
 		newVertex[0] -= b[0];
 		newVertex[1] -= b[1];
+		newVertex[2] -= b[2];
 		return newVertex;
 	}
 	,addSupport: function(direction) {
 		var newVertex = this.calculateSupport(direction);
 		this.vertices.push(newVertex);
-		return direction[0] * newVertex[0] + direction[1] * newVertex[1] >= 0;
-	}
-	,tripleProduct: function(a,b,c) {
-		var this1 = new Float32Array(4);
-		this1[0] = a[0];
-		this1[1] = a[1];
-		this1[2] = 0;
-		var A = this1;
-		var this2 = new Float32Array(4);
-		this2[0] = b[0];
-		this2[1] = b[1];
-		this2[2] = 0;
-		var B = this2;
-		var this3 = new Float32Array(4);
-		this3[0] = c[0];
-		this3[1] = c[1];
-		this3[2] = 0;
-		var C = this3;
-		var this4 = new Float32Array(4);
-		this4[0] = 0;
-		this4[1] = 0;
-		this4[2] = 0;
-		var dest = this4;
-		var this5 = new Float32Array(4);
-		this5[0] = A[1] * B[2] - A[2] * B[1];
-		this5[1] = A[2] * B[0] - A[0] * B[2];
-		this5[2] = A[0] * B[1] - A[1] * B[0];
-		dest = this5;
-		var first = dest;
-		var this6 = new Float32Array(4);
-		this6[0] = 0;
-		this6[1] = 0;
-		this6[2] = 0;
-		var dest1 = this6;
-		var this7 = new Float32Array(4);
-		this7[0] = first[1] * C[2] - first[2] * C[1];
-		this7[1] = first[2] * C[0] - first[0] * C[2];
-		this7[2] = first[0] * C[1] - first[1] * C[0];
-		dest1 = this7;
-		var second = dest1;
-		var this8 = new Float32Array(4);
-		this8[0] = second[0];
-		this8[1] = second[1];
-		return this8;
+		return direction[0] * newVertex[0] + direction[1] * newVertex[1] + direction[2] * newVertex[2] >= 0;
 	}
 	,evolveSimplex: function() {
 		var _g = this.vertices.length;
@@ -1908,9 +1676,11 @@ headbutt_Headbutt2D.prototype = {
 			var this1 = new Float32Array(4);
 			this1[0] = 0;
 			this1[1] = 0;
+			this1[2] = 0;
 			var dest = this1;
 			dest[0] = a[0] - b[0];
 			dest[1] = a[1] - b[1];
+			dest[2] = a[2] - b[2];
 			this.direction = dest;
 			break;
 		case 1:
@@ -1918,9 +1688,11 @@ headbutt_Headbutt2D.prototype = {
 			var this2 = new Float32Array(4);
 			this2[0] = 0;
 			this2[1] = 0;
+			this2[2] = 0;
 			var dest1 = this2;
 			dest1[0] = a1[0] * -1;
 			dest1[1] = a1[1] * -1;
+			dest1[2] = a1[2] * -1;
 			this.direction = dest1;
 			break;
 		case 2:
@@ -1929,55 +1701,185 @@ headbutt_Headbutt2D.prototype = {
 			var this3 = new Float32Array(4);
 			this3[0] = 0;
 			this3[1] = 0;
+			this3[2] = 0;
 			var dest2 = this3;
 			dest2[0] = a2[0] - b1[0];
 			dest2[1] = a2[1] - b1[1];
+			dest2[2] = a2[2] - b1[2];
 			var ab = dest2;
 			var a3 = this.vertices[0];
 			var this4 = new Float32Array(4);
 			this4[0] = 0;
 			this4[1] = 0;
+			this4[2] = 0;
 			var dest3 = this4;
 			dest3[0] = a3[0] * -1;
 			dest3[1] = a3[1] * -1;
+			dest3[2] = a3[2] * -1;
 			var a0 = dest3;
-			this.direction = this.tripleProduct(ab,a0,ab);
-			break;
-		case 3:
-			var a4 = this.vertices[2];
 			var this5 = new Float32Array(4);
 			this5[0] = 0;
 			this5[1] = 0;
+			this5[2] = 0;
 			var dest4 = this5;
-			dest4[0] = a4[0] * -1;
-			dest4[1] = a4[1] * -1;
-			var c0 = dest4;
-			var a5 = this.vertices[1];
-			var b2 = this.vertices[2];
 			var this6 = new Float32Array(4);
-			this6[0] = 0;
-			this6[1] = 0;
-			var dest5 = this6;
-			dest5[0] = a5[0] - b2[0];
-			dest5[1] = a5[1] - b2[1];
-			var bc = dest5;
-			var a6 = this.vertices[0];
-			var b3 = this.vertices[2];
+			this6[0] = ab[1] * a0[2] - ab[2] * a0[1];
+			this6[1] = ab[2] * a0[0] - ab[0] * a0[2];
+			this6[2] = ab[0] * a0[1] - ab[1] * a0[0];
+			dest4 = this6;
+			var tmp = dest4;
+			var dest5 = this.direction;
 			var this7 = new Float32Array(4);
-			this7[0] = 0;
-			this7[1] = 0;
-			var dest6 = this7;
-			dest6[0] = a6[0] - b3[0];
-			dest6[1] = a6[1] - b3[1];
-			var ca = dest6;
-			var bcNorm = this.tripleProduct(ca,bc,bc);
-			var caNorm = this.tripleProduct(bc,ca,ca);
-			if(bcNorm[0] * c0[0] + bcNorm[1] * c0[1] > 0) {
+			this7[0] = tmp[1] * ab[2] - tmp[2] * ab[1];
+			this7[1] = tmp[2] * ab[0] - tmp[0] * ab[2];
+			this7[2] = tmp[0] * ab[1] - tmp[1] * ab[0];
+			dest5 = this7;
+			this.direction = dest5;
+			break;
+		case 3:
+			var a4 = this.vertices[2];
+			var b2 = this.vertices[0];
+			var this8 = new Float32Array(4);
+			this8[0] = 0;
+			this8[1] = 0;
+			this8[2] = 0;
+			var dest6 = this8;
+			dest6[0] = a4[0] - b2[0];
+			dest6[1] = a4[1] - b2[1];
+			dest6[2] = a4[2] - b2[2];
+			var ac = dest6;
+			var a5 = this.vertices[1];
+			var b3 = this.vertices[0];
+			var this9 = new Float32Array(4);
+			this9[0] = 0;
+			this9[1] = 0;
+			this9[2] = 0;
+			var dest7 = this9;
+			dest7[0] = a5[0] - b3[0];
+			dest7[1] = a5[1] - b3[1];
+			dest7[2] = a5[2] - b3[2];
+			var ab1 = dest7;
+			var this10 = new Float32Array(4);
+			this10[0] = 0;
+			this10[1] = 0;
+			this10[2] = 0;
+			var dest8 = this10;
+			var this11 = new Float32Array(4);
+			this11[0] = ac[1] * ab1[2] - ac[2] * ab1[1];
+			this11[1] = ac[2] * ab1[0] - ac[0] * ab1[2];
+			this11[2] = ac[0] * ab1[1] - ac[1] * ab1[0];
+			dest8 = this11;
+			this.direction = dest8;
+			var a6 = this.vertices[0];
+			var this12 = new Float32Array(4);
+			this12[0] = 0;
+			this12[1] = 0;
+			this12[2] = 0;
+			var dest9 = this12;
+			dest9[0] = a6[0] * -1;
+			dest9[1] = a6[1] * -1;
+			dest9[2] = a6[2] * -1;
+			var a01 = dest9;
+			var a7 = this.direction;
+			if(a7[0] * a01[0] + a7[1] * a01[1] + a7[2] * a01[2] < 0) {
+				var a8 = this.direction;
+				var this13 = new Float32Array(4);
+				this13[0] = 0;
+				this13[1] = 0;
+				this13[2] = 0;
+				var dest10 = this13;
+				dest10[0] = a8[0] * -1;
+				dest10[1] = a8[1] * -1;
+				dest10[2] = a8[2] * -1;
+				this.direction = dest10;
+			}
+			break;
+		case 4:
+			var a9 = this.vertices[3];
+			var b4 = this.vertices[0];
+			var this14 = new Float32Array(4);
+			this14[0] = 0;
+			this14[1] = 0;
+			this14[2] = 0;
+			var dest11 = this14;
+			dest11[0] = a9[0] - b4[0];
+			dest11[1] = a9[1] - b4[1];
+			dest11[2] = a9[2] - b4[2];
+			var da = dest11;
+			var a10 = this.vertices[3];
+			var b5 = this.vertices[1];
+			var this15 = new Float32Array(4);
+			this15[0] = 0;
+			this15[1] = 0;
+			this15[2] = 0;
+			var dest12 = this15;
+			dest12[0] = a10[0] - b5[0];
+			dest12[1] = a10[1] - b5[1];
+			dest12[2] = a10[2] - b5[2];
+			var db = dest12;
+			var a11 = this.vertices[3];
+			var b6 = this.vertices[2];
+			var this16 = new Float32Array(4);
+			this16[0] = 0;
+			this16[1] = 0;
+			this16[2] = 0;
+			var dest13 = this16;
+			dest13[0] = a11[0] - b6[0];
+			dest13[1] = a11[1] - b6[1];
+			dest13[2] = a11[2] - b6[2];
+			var dc = dest13;
+			var a12 = this.vertices[3];
+			var this17 = new Float32Array(4);
+			this17[0] = 0;
+			this17[1] = 0;
+			this17[2] = 0;
+			var dest14 = this17;
+			dest14[0] = a12[0] * -1;
+			dest14[1] = a12[1] * -1;
+			dest14[2] = a12[2] * -1;
+			var d0 = dest14;
+			var this18 = new Float32Array(4);
+			this18[0] = 0;
+			this18[1] = 0;
+			this18[2] = 0;
+			var dest15 = this18;
+			var this19 = new Float32Array(4);
+			this19[0] = da[1] * db[2] - da[2] * db[1];
+			this19[1] = da[2] * db[0] - da[0] * db[2];
+			this19[2] = da[0] * db[1] - da[1] * db[0];
+			dest15 = this19;
+			var abdNorm = dest15;
+			var this20 = new Float32Array(4);
+			this20[0] = 0;
+			this20[1] = 0;
+			this20[2] = 0;
+			var dest16 = this20;
+			var this21 = new Float32Array(4);
+			this21[0] = db[1] * dc[2] - db[2] * dc[1];
+			this21[1] = db[2] * dc[0] - db[0] * dc[2];
+			this21[2] = db[0] * dc[1] - db[1] * dc[0];
+			dest16 = this21;
+			var bcdNorm = dest16;
+			var this22 = new Float32Array(4);
+			this22[0] = 0;
+			this22[1] = 0;
+			this22[2] = 0;
+			var dest17 = this22;
+			var this23 = new Float32Array(4);
+			this23[0] = dc[1] * da[2] - dc[2] * da[1];
+			this23[1] = dc[2] * da[0] - dc[0] * da[2];
+			this23[2] = dc[0] * da[1] - dc[1] * da[0];
+			dest17 = this23;
+			var cadNorm = dest17;
+			if(abdNorm[0] * d0[0] + abdNorm[1] * d0[1] + abdNorm[2] * d0[2] > 0) {
+				HxOverrides.remove(this.vertices,this.vertices[2]);
+				this.direction = abdNorm;
+			} else if(bcdNorm[0] * d0[0] + bcdNorm[1] * d0[1] + bcdNorm[2] * d0[2] > 0) {
 				HxOverrides.remove(this.vertices,this.vertices[0]);
-				this.direction = bcNorm;
-			} else if(caNorm[0] * c0[0] + caNorm[1] * c0[1] > 0) {
+				this.direction = bcdNorm;
+			} else if(cadNorm[0] * d0[0] + cadNorm[1] * d0[1] + cadNorm[2] * d0[2] > 0) {
 				HxOverrides.remove(this.vertices,this.vertices[1]);
-				this.direction = caNorm;
+				this.direction = cadNorm;
 			} else {
 				return headbutt_EvolveResult.FoundIntersection;
 			}
@@ -1996,164 +1898,31 @@ headbutt_Headbutt2D.prototype = {
 		this.shapeA = shapeA;
 		this.shapeB = shapeB;
 		var result = headbutt_EvolveResult.StillEvolving;
-		while(result == headbutt_EvolveResult.StillEvolving) result = this.evolveSimplex();
+		var iterations = 0;
+		while(iterations < this.maxIterations && result == headbutt_EvolveResult.StillEvolving) {
+			result = this.evolveSimplex();
+			++iterations;
+		}
 		return result == headbutt_EvolveResult.FoundIntersection;
 	}
-	,findClosestEdge: function(winding) {
-		var closestDistance = Infinity;
-		var this1 = new Float32Array(4);
-		this1[0] = 0;
-		this1[1] = 0;
-		var closestNormal = this1;
-		var closestIndex = 0;
-		var this2 = new Float32Array(4);
-		this2[0] = 0;
-		this2[1] = 0;
-		var line = this2;
-		var _g1 = 0;
-		var _g = this.vertices.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var j = i + 1;
-			if(j >= this.vertices.length) {
-				j = 0;
-			}
-			var src = this.vertices[j];
-			line[0] = src[0];
-			line[1] = src[1];
-			var b = this.vertices[i];
-			line[0] -= b[0];
-			line[1] -= b[1];
-			var norm;
-			switch(winding[1]) {
-			case 0:
-				var this3 = new Float32Array(4);
-				this3[0] = line[1];
-				this3[1] = -line[0];
-				norm = this3;
-				break;
-			case 1:
-				var this4 = new Float32Array(4);
-				this4[0] = -line[1];
-				this4[1] = line[0];
-				norm = this4;
-				break;
-			}
-			var length = Math.sqrt(norm[0] * norm[0] + norm[1] * norm[1]);
-			var mult = 0;
-			if(length >= glm_GLM.EPSILON) {
-				mult = 1 / length;
-			}
-			norm[0] *= mult;
-			norm[1] *= mult;
-			var b1 = this.vertices[i];
-			var dist = norm[0] * b1[0] + norm[1] * b1[1];
-			if(dist < closestDistance) {
-				closestDistance = dist;
-				closestNormal = norm;
-				closestIndex = j;
-			}
-		}
-		return new headbutt_Edge(closestDistance,closestNormal,closestIndex);
-	}
-	,intersect: function(shapeA,shapeB) {
-		if(!this.test(shapeA,shapeB)) {
-			return null;
-		}
-		var e0 = (this.vertices[1][0] - this.vertices[0][0]) * (this.vertices[1][1] + this.vertices[0][1]);
-		var e1 = (this.vertices[2][0] - this.vertices[1][0]) * (this.vertices[2][1] + this.vertices[1][1]);
-		var e2 = (this.vertices[0][0] - this.vertices[2][0]) * (this.vertices[0][1] + this.vertices[2][1]);
-		var winding = e0 + e1 + e2 >= 0 ? headbutt_PolygonWinding.Clockwise : headbutt_PolygonWinding.CounterClockwise;
-		var this1 = new Float32Array(4);
-		this1[0] = 0;
-		this1[1] = 0;
-		var intersection = this1;
-		var _g = 0;
-		while(_g < 32) {
-			var i = _g++;
-			var edge = this.findClosestEdge(winding);
-			var support = this.calculateSupport(edge.normal);
-			var b = edge.normal;
-			var distance = support[0] * b[0] + support[1] * b[1];
-			var src = edge.normal;
-			intersection[0] = src[0];
-			intersection[1] = src[1];
-			intersection = intersection;
-			intersection[0] *= distance;
-			intersection[1] *= distance;
-			if(Math.abs(distance - edge.distance) <= 0.000001) {
-				return intersection;
-			} else {
-				this.vertices.splice(edge.index,0,support);
-			}
-		}
-		return intersection;
-	}
-	,__class__: headbutt_Headbutt2D
+	,__class__: headbutt_Headbutt3D
 };
-var headbutt_PolygonWinding = { __ename__ : true, __constructs__ : ["Clockwise","CounterClockwise"] };
-headbutt_PolygonWinding.Clockwise = ["Clockwise",0];
-headbutt_PolygonWinding.Clockwise.__enum__ = headbutt_PolygonWinding;
-headbutt_PolygonWinding.CounterClockwise = ["CounterClockwise",1];
-headbutt_PolygonWinding.CounterClockwise.__enum__ = headbutt_PolygonWinding;
-var headbutt_Shape2D = function() { };
-headbutt_Shape2D.__name__ = true;
-headbutt_Shape2D.prototype = {
-	__class__: headbutt_Shape2D
+var headbutt_Shape3D = function() { };
+headbutt_Shape3D.__name__ = true;
+headbutt_Shape3D.prototype = {
+	__class__: headbutt_Shape3D
 };
-var headbutt_shapes_Circle = function(centre,radius) {
-	this.set_centre(centre);
-	this.radius = radius;
-};
-headbutt_shapes_Circle.__name__ = true;
-headbutt_shapes_Circle.__interfaces__ = [headbutt_Shape2D];
-headbutt_shapes_Circle.prototype = {
-	get_centre: function() {
-		return this._centre;
-	}
-	,set_centre: function(c) {
-		return this._centre = c;
-	}
-	,support: function(direction) {
-		var src = this.get_centre();
-		var this1 = new Float32Array(4);
-		this1[0] = 0;
-		this1[1] = 0;
-		var dest = this1;
-		dest[0] = src[0];
-		dest[1] = src[1];
-		var c = dest;
-		var this2 = new Float32Array(4);
-		this2[0] = 0;
-		this2[1] = 0;
-		var dest1 = this2;
-		var length = Math.sqrt(direction[0] * direction[0] + direction[1] * direction[1]);
-		var mult = 0;
-		if(length >= glm_GLM.EPSILON) {
-			mult = 1 / length;
-		}
-		dest1[0] = direction[0] * mult;
-		dest1[1] = direction[1] * mult;
-		var d = dest1;
-		var s = this.radius;
-		d[0] *= s;
-		d[1] *= s;
-		c[0] += d[0];
-		c[1] += d[1];
-		return c;
-	}
-	,__class__: headbutt_shapes_Circle
-};
-var headbutt_shapes_Polygon2D = function(vertices) {
+var headbutt_shapes_Polygon3D = function(vertices) {
 	this.vertices = vertices;
 };
-headbutt_shapes_Polygon2D.__name__ = true;
-headbutt_shapes_Polygon2D.__interfaces__ = [headbutt_Shape2D];
-headbutt_shapes_Polygon2D.prototype = {
+headbutt_shapes_Polygon3D.__name__ = true;
+headbutt_shapes_Polygon3D.__interfaces__ = [headbutt_Shape3D];
+headbutt_shapes_Polygon3D.prototype = {
 	get_centre: function() {
 		var this1 = new Float32Array(4);
 		this1[0] = 0;
 		this1[1] = 0;
+		this1[2] = 0;
 		var c = this1;
 		var count = 0.0;
 		var _g = 0;
@@ -2163,17 +1932,20 @@ headbutt_shapes_Polygon2D.prototype = {
 			++_g;
 			c[0] += v[0];
 			c[1] += v[1];
+			c[2] += v[2];
 			count += 1.0;
 		}
 		var s = 1.0 / count;
 		c[0] *= s;
 		c[1] *= s;
+		c[2] *= s;
 		return c;
 	}
 	,set_centre: function(c) {
 		var diff = this.get_centre();
 		diff[0] = c[0] - diff[0];
 		diff[1] = c[1] - diff[1];
+		diff[2] = c[2] - diff[2];
 		var _g = 0;
 		var _g1 = this.vertices;
 		while(_g < _g1.length) {
@@ -2181,6 +1953,7 @@ headbutt_shapes_Polygon2D.prototype = {
 			++_g;
 			vert[0] += diff[0];
 			vert[1] += diff[1];
+			vert[2] += diff[2];
 		}
 		return c;
 	}
@@ -2192,7 +1965,7 @@ headbutt_shapes_Polygon2D.prototype = {
 		while(_g < _g1.length) {
 			var v = _g1[_g];
 			++_g;
-			var distance = v[0] * direction[0] + v[1] * direction[1];
+			var distance = v[0] * direction[0] + v[1] * direction[1] + v[2] * direction[2];
 			if(distance > furthestDistance) {
 				furthestDistance = distance;
 				furthestVertex = v;
@@ -2200,7 +1973,56 @@ headbutt_shapes_Polygon2D.prototype = {
 		}
 		return furthestVertex;
 	}
-	,__class__: headbutt_shapes_Polygon2D
+	,__class__: headbutt_shapes_Polygon3D
+};
+var headbutt_shapes_Sphere = function(centre,radius) {
+	this.set_centre(centre);
+	this.radius = radius;
+};
+headbutt_shapes_Sphere.__name__ = true;
+headbutt_shapes_Sphere.__interfaces__ = [headbutt_Shape3D];
+headbutt_shapes_Sphere.prototype = {
+	get_centre: function() {
+		return this._centre;
+	}
+	,set_centre: function(c) {
+		return this._centre = c;
+	}
+	,support: function(direction) {
+		var src = this.get_centre();
+		var this1 = new Float32Array(4);
+		this1[0] = 0;
+		this1[1] = 0;
+		this1[2] = 0;
+		var dest = this1;
+		dest[0] = src[0];
+		dest[1] = src[1];
+		dest[2] = src[2];
+		var c = dest;
+		var this2 = new Float32Array(4);
+		this2[0] = 0;
+		this2[1] = 0;
+		this2[2] = 0;
+		var dest1 = this2;
+		var length = Math.sqrt(direction[0] * direction[0] + direction[1] * direction[1] + direction[2] * direction[2]);
+		var mult = 0;
+		if(length >= glm_GLM.EPSILON) {
+			mult = 1 / length;
+		}
+		dest1[0] = direction[0] * mult;
+		dest1[1] = direction[1] * mult;
+		dest1[2] = direction[2] * mult;
+		var d = dest1;
+		var s = this.radius;
+		d[0] *= s;
+		d[1] *= s;
+		d[2] *= s;
+		c[0] += d[0];
+		c[1] += d[1];
+		c[2] += d[2];
+		return c;
+	}
+	,__class__: headbutt_shapes_Sphere
 };
 var js__$Boot_HaxeError = function(val) {
 	Error.call(this);
@@ -2611,6 +2433,15 @@ js_html_compat_Uint8Array._subarray = function(start,end) {
 	a.byteOffset = start;
 	return a;
 };
+var js_three__$ArrayLike_ArrayLike_$Impl_$ = {};
+js_three__$ArrayLike_ArrayLike_$Impl_$.__name__ = true;
+js_three__$ArrayLike_ArrayLike_$Impl_$.get = function(this1,key) {
+	return this1[key];
+};
+js_three__$ArrayLike_ArrayLike_$Impl_$.arrayWrite = function(this1,k,v) {
+	this1[k] = v;
+	return v;
+};
 String.prototype.__class__ = String;
 String.__name__ = true;
 Array.__name__ = true;
@@ -2628,13 +2459,11 @@ if(ArrayBuffer.prototype.slice == null) {
 }
 var Float32Array = $global.Float32Array || js_html_compat_Float32Array._new;
 var Uint8Array = $global.Uint8Array || js_html_compat_Uint8Array._new;
-Main.lastTime = 0;
-Main.circSpeed = 30;
-Main.intersectingPoly = false;
-Main.intersectingCirc = false;
 glm_GLM.EPSILON = 0.0000001;
 js_Boot.__toStr = ({ }).toString;
 js_html_compat_Float32Array.BYTES_PER_ELEMENT = 4;
 js_html_compat_Uint8Array.BYTES_PER_ELEMENT = 1;
 Main.main();
 })(typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);
+
+//# sourceMappingURL=threed_collision.js.map

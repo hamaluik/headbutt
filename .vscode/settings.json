@@ -1,6 +1,6 @@
 {
     "haxe.displayConfigurations": [
-        ["samples/build.hxml"],
+        ["samples.hxml"],
         ["completion.hxml"],
         ["test.interp.hxml"]
     ]

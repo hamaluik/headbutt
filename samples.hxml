@@ -1,0 +1,7 @@
+-main Main
+-cp src/
+-lib glm
+-debug
+-lib threejs
+-cp samples/threed_collision
+-js samples/bin/threed_collision.js
