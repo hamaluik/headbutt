@@ -72,6 +72,8 @@ Main.main = function() {
 	scene.add(pointLight);
 	var ambientLight = new THREE.AmbientLight(4210752);
 	scene.add(ambientLight);
+	var grid = new THREE.GridHelper(200,25);
+	scene.add(grid);
 	var camera = new THREE.PerspectiveCamera(70,canvas.clientWidth / canvas.clientHeight,1,1000);
 	camera.position.set(75 * Math.cos(Math.PI / 4),75,75 * Math.sin(Math.PI / 4));
 	camera.lookAt(cube.position);
@@ -2465,5 +2467,3 @@ js_html_compat_Float32Array.BYTES_PER_ELEMENT = 4;
 js_html_compat_Uint8Array.BYTES_PER_ELEMENT = 1;
 Main.main();
 })(typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);
-
-//# sourceMappingURL=threed_collision.js.map

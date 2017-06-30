@@ -1,6 +1,7 @@
 -main Main
 -cp ../src/
 -lib glm
+-lib closure
 
 --each
 

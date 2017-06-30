@@ -8,6 +8,7 @@ import js.three.PointLight;
 import js.three.AmbientLight;
 import js.three.PerspectiveCamera;
 import js.three.WebGLRenderer;
+import js.three.GridHelper;
 
 import headbutt.Headbutt3D;
 import headbutt.shapes.Sphere;
@@ -47,6 +48,9 @@ class Main {
 
         var ambientLight = new AmbientLight(0x404040);
         scene.add(ambientLight);
+
+        var grid:GridHelper = new GridHelper(200, 25);
+        scene.add(grid);
 		
 		var camera = new PerspectiveCamera(70, canvas.clientWidth / canvas.clientHeight, 1, 1000);
         camera.position.set(75 * Math.cos(Math.PI/4), 75, 75 * Math.sin(Math.PI / 4));

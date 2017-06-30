@@ -1827,6 +1827,7 @@ headbutt_Edge.prototype = {
 	__class__: headbutt_Edge
 };
 var headbutt_Headbutt2D = function() {
+	this.maxIterations = 20;
 };
 headbutt_Headbutt2D.__name__ = true;
 headbutt_Headbutt2D.prototype = {
@@ -1996,7 +1997,11 @@ headbutt_Headbutt2D.prototype = {
 		this.shapeA = shapeA;
 		this.shapeB = shapeB;
 		var result = headbutt_EvolveResult.StillEvolving;
-		while(result == headbutt_EvolveResult.StillEvolving) result = this.evolveSimplex();
+		var iterations = 0;
+		while(iterations < this.maxIterations && result == headbutt_EvolveResult.StillEvolving) {
+			result = this.evolveSimplex();
+			++iterations;
+		}
 		return result == headbutt_EvolveResult.FoundIntersection;
 	}
 	,findClosestEdge: function(winding) {
