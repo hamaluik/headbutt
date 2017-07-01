@@ -4,17 +4,6 @@ import glm.Vec3;
 using glm.Vec2;
 import headbutt.Shape2D;
 
-enum EvolveResult {
-    NoIntersection;
-    FoundIntersection;
-    StillEvolving;
-}
-
-enum PolygonWinding {
-    Clockwise;
-    CounterClockwise;
-}
-
 class Edge {
     public var distance:Float;
     public var normal:Vec2;
@@ -32,6 +21,8 @@ class Headbutt2D {
     private var direction:Vec2;
     private var shapeA:Shape2D;
     private var shapeB:Shape2D;
+
+    public var maxIterations:Int = 20;
 
     public function new() {}
 
@@ -62,49 +53,46 @@ class Headbutt2D {
     private function evolveSimplex():EvolveResult {
         switch(vertices.length) {
             case 0: {
-                direction = shapeB.center() - shapeA.center();
+                direction = shapeB.centre - shapeA.centre;
             }
             case 1: {
                 // flip the direction
                 direction *= -1;
             }
             case 2: {
-                var b:Vec2 = vertices[1];
-                var c:Vec2 = vertices[0];
-                
-                // line cb is the line formed by the first two vertices
-                var cb:Vec2 = b - c;
-                // line c0 is the line from the first vertex to the origin
-                var c0:Vec2 = c * -1;
+                // line ab is the line formed by the first two vertices
+                var ab:Vec2 = vertices[1] - vertices[0];
+                // line a0 is the line from the first vertex to the origin
+                var a0:Vec2 = vertices[0] * -1;
 
                 // use the triple-cross-product to calculate a direction perpendicular
-                // to line cb in the direction of the origin
-                direction = tripleProduct(cb, c0, cb);
+                // to line ab in the direction of the origin
+                direction = tripleProduct(ab, a0, ab);
             }
             case 3: {
                 // calculate if the simplex contains the origin
-                var a:Vec2 = vertices[2];
+                /*var a:Vec2 = vertices[2];
                 var b:Vec2 = vertices[1];
-                var c:Vec2 = vertices[0];
+                var c:Vec2 = vertices[0];*/
 
-                var a0:Vec2 = a * -1; // v2 to the origin
-                var ab:Vec2 = b - a; // v2 to v1
-                var ac:Vec2 = c - a; // v2 to v0
+                var c0:Vec2 = vertices[2] * -1;
+                var bc:Vec2 = vertices[1] - vertices[2];
+                var ca:Vec2 = vertices[0] - vertices[2];
 
-                var abPerp:Vec2 = tripleProduct(ac, ab, ab);
-                var acPerp:Vec2 = tripleProduct(ab, ac, ac);
+                var bcNorm:Vec2 = tripleProduct(ca, bc, bc);
+                var caNorm:Vec2 = tripleProduct(bc, ca, ca);
 
-                if(abPerp.dot(a0) > 0) {
-                    // the origin is outside line ab
-                    // get rid of c and add a new support in the direction of abPerp
-                    vertices.remove(c);
-                    direction = abPerp;
+                if(bcNorm.dot(c0) > 0) {
+                    // the origin is outside line bc
+                    // get rid of a and add a new support in the direction of bcNorm
+                    vertices.remove(vertices[0]);
+                    direction = bcNorm;
                 }
-                else if(acPerp.dot(a0) > 0) {
-                    // the origin is outside line ac
-                    // get rid of b and add a new support in the direction of acPerp
-                    vertices.remove(b);
-                    direction = acPerp;
+                else if(caNorm.dot(c0) > 0) {
+                    // the origin is outside line ca
+                    // get rid of b and add a new support in the direction of caNorm
+                    vertices.remove(vertices[1]);
+                    direction = caNorm;
                 }
                 else {
                     // the origin is inside both ab and ac,
@@ -128,8 +116,10 @@ class Headbutt2D {
 
         // do the actual test
         var result:EvolveResult = EvolveResult.StillEvolving;
-        while(result == EvolveResult.StillEvolving) {
+        var iterations:Int = 0;
+        while(iterations < maxIterations && result == EvolveResult.StillEvolving) {
             result = evolveSimplex();
+            iterations++;
         }
         return result == EvolveResult.FoundIntersection;
     }
