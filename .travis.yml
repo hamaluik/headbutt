@@ -1,0 +1,27 @@
+# adapted from https://github.com/andyli/HaxeCI/blob/master/.travis.yml
+language: haxe
+
+env:
+    matrix:
+    - TARGET=interp
+
+haxe:
+  - "3.4.2"
+  - development
+
+matrix:
+  # Allow Haxe development to fail.
+  allow_failures:
+    - haxe: development
+
+install:
+  # install haxelibs
+  - haxelib install buddy
+  - haxelib install glm
+
+script:
+  - haxe test.${TARGET}.hxml
+
+branches:
+      only:
+          - master
