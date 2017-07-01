@@ -1,0 +1,14 @@
+{
+  "name": "headbutt",
+  "url" : "https://github.com/FuzzyWuzzie/headbutt",
+  "license": "Apache",
+  "classPath": "src",
+  "tags": ["cross", "utility"],
+  "description": "GJK and EPA based collision detection and intersection calculation",
+  "version": "0.3.0",
+  "releasenote": "Added 3D collision detection",
+  "contributors": ["FuzzyWuzzie"],
+  "dependencies": {
+      "glm": ""
+  }
+}
