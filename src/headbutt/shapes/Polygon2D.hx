@@ -10,6 +10,7 @@ class Polygon2D implements Shape2D {
 
     public function new(?vertices:Array<Vec2>) {
         this.vertices = vertices;
+        this.offset = new Vec2(0, 0);
     }
 
     private function get_offset():Vec2 {
@@ -22,7 +23,7 @@ class Polygon2D implements Shape2D {
 
     public function support(direction:Vec2):Vec2 {
         var furthestDistance:Float = Math.NEGATIVE_INFINITY;
-        var furthestVertex:Vec2 = null;
+        var furthestVertex:Vec2 = new Vec2(0, 0);
 
         var vo:Vec2 = new Vec2();
         for(v in vertices) {
