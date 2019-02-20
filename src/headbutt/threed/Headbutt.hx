@@ -1,12 +1,18 @@
-package headbutt;
+package headbutt.threed;
 
 using glm.Vec3;
 
-class Headbutt3D {
+private enum EvolveResult {
+    NoIntersection;
+    FoundIntersection;
+    StillEvolving;
+}
+
+class Headbutt {
     private var vertices:Array<Vec3>;
     private var direction:Vec3;
-    private var shapeA:Shape3D;
-    private var shapeB:Shape3D;
+    private var shapeA:Shape;
+    private var shapeB:Shape;
 
     public var maxIterations:Int = 20;
 
@@ -124,7 +130,7 @@ class Headbutt3D {
             : EvolveResult.NoIntersection;
     }
 
-    public function test(shapeA:Shape3D, shapeB:Shape3D):Bool {
+    public function test(shapeA:Shape, shapeB:Shape):Bool {
         // reset everything
         this.vertices = new Array<Vec3>();
         this.shapeA = shapeA;

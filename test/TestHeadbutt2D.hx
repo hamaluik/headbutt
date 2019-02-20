@@ -1,19 +1,19 @@
-import headbutt.Headbutt2D;
-import headbutt.shapes.Polygon;
-import headbutt.shapes.Circle;
-import headbutt.shapes.Line2D;
-import headbutt.shapes.Rectangle;
+import headbutt.twod.Headbutt;
+import headbutt.twod.shapes.Polygon;
+import headbutt.twod.shapes.Circle;
+import headbutt.twod.shapes.Line;
+import headbutt.twod.shapes.Rectangle;
 import buddy.*;
 using buddy.Should;
 import glm.Vec2;
 
-@:access(headbutt.Headbutt2D)
+@:access(headbutt.twod.Headbutt)
 class TestHeadbutt2D extends BuddySuite {
     public function new() {
-        describe('Using Headbutt2D', {
-            var hb:Headbutt2D;
+        describe('Using Headbutt 2D', {
+            var hb:Headbutt;
             beforeEach({
-                hb = new Headbutt2D();
+                hb = new Headbutt();
             });
 
             it('should calculate Minkowski difference supports with polygons', {
@@ -104,8 +104,8 @@ class TestHeadbutt2D extends BuddySuite {
             });
 
             it('should detect collisions between two lines', {
-                var lineA = new Line2D(new Vec2(-1, -1), new Vec2(1, 1));
-                var lineB = new Line2D(new Vec2(-1, 1), new Vec2(1, -1));
+                var lineA = new Line(new Vec2(-1, -1), new Vec2(1, 1));
+                var lineB = new Line(new Vec2(-1, 1), new Vec2(1, -1));
 
                 var result:Bool = hb.test(lineA, lineB);
                 result.should.be(true);
@@ -116,7 +116,7 @@ class TestHeadbutt2D extends BuddySuite {
                     new Vec2(-1, -1), new Vec2(1, -1),
                     new Vec2(1, 1), new Vec2(-1, 1)
                 ]);
-                var lineA = new Line2D(new Vec2(-1, -1), new Vec2(1, 1));
+                var lineA = new Line(new Vec2(-1, -1), new Vec2(1, 1));
 
                 var result:Bool = hb.test(shapeA, lineA);
                 result.should.be(true);
@@ -124,8 +124,8 @@ class TestHeadbutt2D extends BuddySuite {
 
             it('should detect collisions between a line and a circle', {
                 var circ:Circle = new Circle(new Vec2(0, 0), 1);
-                var lineA = new Line2D(new Vec2(-1, -1), new Vec2(1, 1));
-                var lineB = new Line2D(new Vec2(-5, -5), new Vec2(-4, -4));
+                var lineA = new Line(new Vec2(-1, -1), new Vec2(1, 1));
+                var lineB = new Line(new Vec2(-5, -5), new Vec2(-4, -4));
 
                 var resultA:Bool = hb.test(circ, lineA);
                 var resultB:Bool = hb.test(circ, lineB);
@@ -170,7 +170,7 @@ class TestHeadbutt2D extends BuddySuite {
 
             it('should calculate the intersection of a line and square', {
                 var square: Rectangle = new Rectangle(new Vec2(0, 0), new Vec2(1, 1));
-                var line: Line2D = new Line2D(new Vec2(0.5, 0), new Vec2(3.5, 3));
+                var line: Line = new Line(new Vec2(0.5, 0), new Vec2(3.5, 3));
 
                 var intersection:Vec2 = hb.intersect(square, line);
                 intersection.x.should.be(0.5);

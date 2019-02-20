@@ -1,8 +1,7 @@
-package headbutt;
+package headbutt.twod;
 
 import glm.Vec3;
 using glm.Vec2;
-import headbutt.Shape2D;
 
 class Edge {
     public var distance:Float;
@@ -16,11 +15,22 @@ class Edge {
     }
 }
 
-class Headbutt2D {
+enum EvolveResult {
+    NoIntersection;
+    FoundIntersection;
+    StillEvolving;
+}
+
+enum PolygonWinding {
+    Clockwise;
+    CounterClockwise;
+}
+
+class Headbutt {
     private var vertices:Array<Vec2>;
     private var direction:Vec2;
-    private var shapeA:Shape2D;
-    private var shapeB:Shape2D;
+    private var shapeA:Shape;
+    private var shapeB:Shape;
 
     public var maxIterations:Int = 20;
 
@@ -108,7 +118,7 @@ class Headbutt2D {
             : EvolveResult.NoIntersection;
     }
 
-    public function test(shapeA:Shape2D, shapeB:Shape2D):Bool {
+    public function test(shapeA:Shape, shapeB:Shape):Bool {
         // reset everything
         this.vertices = new Array<Vec2>();
         this.shapeA = shapeA;
@@ -156,7 +166,7 @@ class Headbutt2D {
         return new Edge(closestDistance, closestNormal, closestIndex);
     }
 
-    public function intersect(shapeA:Shape2D, shapeB:Shape2D):Null<Vec2> {
+    public function intersect(shapeA:Shape, shapeB:Shape):Null<Vec2> {
         // first, calculate the base simplex
         if(!test(shapeA, shapeB)) {
             // if we're not intersecting, return null

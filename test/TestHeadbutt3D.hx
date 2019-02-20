@@ -1,17 +1,17 @@
-import headbutt.Headbutt3D;
-import headbutt.shapes.Sphere;
-import headbutt.shapes.Polyhedron;
+import headbutt.threed.Headbutt;
+import headbutt.threed.shapes.Sphere;
+import headbutt.threed.shapes.Polyhedron;
 import buddy.*;
 using buddy.Should;
 import glm.Vec3;
 
-@:access(headbutt.Headbutt3D)
+@:access(headbutt.threed.Headbutt)
 class TestHeadbutt3D extends BuddySuite {
     public function new() {
-        describe('Using Headbutt3D', {
-            var hb:Headbutt3D;
+        describe('Using Headbutt 3D', {
+            var hb:Headbutt;
             beforeEach({
-                hb = new Headbutt3D();
+                hb = new Headbutt();
             });
 
             it('should detect collisions for two polyhedrons which overlap', {

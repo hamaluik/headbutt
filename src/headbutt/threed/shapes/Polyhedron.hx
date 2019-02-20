@@ -1,9 +1,9 @@
-package headbutt.shapes;
+package headbutt.threed.shapes;
 
 using glm.Vec3;
-import headbutt.Shape3D;
+import headbutt.threed.Shape;
 
-class Polyhedron implements Shape3D {
+class Polyhedron implements Shape {
     private var _origin: Vec3;
     /**
        The origin of the polygon in global coordinate space
