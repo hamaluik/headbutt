@@ -1,10 +1,10 @@
-package headbutt.shapes;
+package headbutt.twod.shapes;
 
 using glm.Vec2;
-import headbutt.Shape2D;
+import headbutt.twod.Shape;
 import haxe.ds.Vector;
 
-class Rectangle implements Shape2D {
+class Rectangle implements Shape {
     private var _origin: Vec2;
     public var origin(get, set): Vec2;
 

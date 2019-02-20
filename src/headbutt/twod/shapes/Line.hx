@@ -1,9 +1,9 @@
-package headbutt.shapes;
+package headbutt.twod.shapes;
 
 using glm.Vec2;
-import headbutt.Shape2D;
+import headbutt.twod.Shape;
 
-class Line2D implements Shape2D {
+class Line implements Shape {
     /**
        Start is in global coordinates
     */

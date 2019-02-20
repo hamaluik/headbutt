@@ -1,9 +1,9 @@
-package headbutt.shapes;
+package headbutt.threed.shapes;
 
 using glm.Vec3;
-import headbutt.Shape3D;
+import headbutt.threed.Shape;
 
-class Sphere implements Shape3D {
+class Sphere implements Shape {
     private var _origin: Vec3;
     public var origin(get, set): Vec3;
     public var radius: Float;

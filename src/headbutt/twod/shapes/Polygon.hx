@@ -1,9 +1,9 @@
-package headbutt.shapes;
+package headbutt.twod.shapes;
 
 using glm.Vec2;
-import headbutt.Shape2D;
+import headbutt.twod.Shape;
 
-class Polygon implements Shape2D {
+class Polygon implements Shape {
     private var _origin: Vec2;
     /**
        The origin of the polygon in global coordinate space

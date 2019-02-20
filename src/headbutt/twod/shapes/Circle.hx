@@ -1,9 +1,9 @@
-package headbutt.shapes;
+package headbutt.twod.shapes;
 
 using glm.Vec2;
-import headbutt.Shape2D;
+import headbutt.twod.Shape;
 
-class Circle implements Shape2D {
+class Circle implements Shape {
     private var _origin: Vec2;
     public var origin(get, set): Vec2;
     public var radius: Float;
