@@ -3,7 +3,7 @@ package headbutt.shapes;
 using glm.Vec2;
 import headbutt.Shape2D;
 
-class ConvexPolygon2D implements Shape2D {
+class Polygon implements Shape2D {
     private var _origin: Vec2;
     /**
        The origin of the polygon in global coordinate space

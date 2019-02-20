@@ -3,7 +3,7 @@ package headbutt.shapes;
 using glm.Vec3;
 import headbutt.Shape3D;
 
-class ConvexPolygon3D implements Shape3D {
+class Polyhedron implements Shape3D {
     private var _origin: Vec3;
     /**
        The origin of the polygon in global coordinate space
