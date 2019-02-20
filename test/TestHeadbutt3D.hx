@@ -1,6 +1,6 @@
 import headbutt.Headbutt3D;
 import headbutt.shapes.Sphere;
-import headbutt.shapes.Polygon3D;
+import headbutt.shapes.ConvexPolygon3D;
 import buddy.*;
 using buddy.Should;
 import glm.Vec3;
@@ -15,13 +15,13 @@ class TestHeadbutt3D extends BuddySuite {
             });
 
             it('should detect collisions for two polygons which overlap', {
-                var a:Polygon3D = new Polygon3D([
+                var a:ConvexPolygon3D = new ConvexPolygon3D(new Vec3(0, 0, 0), [
                     new Vec3(-1, -1, -1), new Vec3(-1, -1,  1),
                     new Vec3(-1,  1, -1), new Vec3(-1,  1,  1),
                     new Vec3( 1, -1, -1), new Vec3( 1, -1,  1),
                     new Vec3( 1,  1, -1), new Vec3( 1,  1,  1)
                 ]);
-                var b:Polygon3D = new Polygon3D([
+                var b:ConvexPolygon3D = new ConvexPolygon3D(new Vec3(0, 0, 0), [
                     new Vec3(-0.5, -1, -1), new Vec3(-0.5, -1,  1),
                     new Vec3(-0.5,  1, -1), new Vec3(-0.5,  1,  1),
                     new Vec3( 0.5, -1, -1), new Vec3( 0.5, -1,  1),
@@ -41,13 +41,13 @@ class TestHeadbutt3D extends BuddySuite {
             });
 
             it('shouldn\'t detect collisions for two polygons which don\'t overlap', {
-                var a:Polygon3D = new Polygon3D([
+                var a:ConvexPolygon3D = new ConvexPolygon3D(new Vec3(0, 0, 0), [
                     new Vec3(-1, -1, -1), new Vec3(-1, -1,  1),
                     new Vec3(-1,  1, -1), new Vec3(-1,  1,  1),
                     new Vec3( 1, -1, -1), new Vec3( 1, -1,  1),
                     new Vec3( 1,  1, -1), new Vec3( 1,  1,  1)
                 ]);
-                var b:Polygon3D = new Polygon3D([
+                var b:ConvexPolygon3D = new ConvexPolygon3D(new Vec3(0, 0, 0), [
                     new Vec3(-5, -1, -1), new Vec3(-5, -1,  1),
                     new Vec3(-5,  1, -1), new Vec3(-5,  1,  1),
                     new Vec3(-4, -1, -1), new Vec3(-4, -1,  1),
@@ -74,7 +74,7 @@ class TestHeadbutt3D extends BuddySuite {
 
             it('should detect collisions between a sphere and a polygon', {
                 var s:Sphere = new Sphere(new Vec3(0.5, 0.5, 0.5), 1);
-                var p:Polygon3D = new Polygon3D([
+                var p:ConvexPolygon3D = new ConvexPolygon3D(new Vec3(0, 0, 0), [
                     new Vec3(-1, -1, -1), new Vec3(-1, -1,  1),
                     new Vec3(-1,  1, -1), new Vec3(-1,  1,  1),
                     new Vec3( 1, -1, -1), new Vec3( 1, -1,  1),

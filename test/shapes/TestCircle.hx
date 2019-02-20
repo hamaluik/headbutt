@@ -8,14 +8,6 @@ import glm.Vec2;
 class TestCircle extends BuddySuite {
     public function new() {
         describe('Using circles', {
-            it('should calculate the center', {
-                var circ:Circle = new Circle(new Vec2(0, 0.5), 0.75);
-                var c:Vec2 = circ.centre;
-
-                c.x.should.be(0);
-                c.y.should.be(0.5);
-            });
-
             it('should calculate supports when at the origin', {
                 var direction:Vec2 = new Vec2(1, 0);
                 var circ:Circle = new Circle(new Vec2(0, 0), 1);

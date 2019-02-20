@@ -1,5 +1,5 @@
 import headbutt.Headbutt2D;
-import headbutt.shapes.Polygon2D;
+import headbutt.shapes.ConvexPolygon2D;
 import headbutt.shapes.Circle;
 import buddy.*;
 using buddy.Should;
@@ -15,11 +15,11 @@ class TestHeadbutt2D extends BuddySuite {
             });
 
             it('should calculate Minkowski difference supports with polygons', {
-                var shapeA:Polygon2D = new Polygon2D([
+                var shapeA:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(-18, -18), new Vec2(-10, -18),
                     new Vec2(-10, -13), new Vec2(-18, -13)
                 ]);
-                var shapeB:Polygon2D = new Polygon2D([
+                var shapeB:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(-14, -14), new Vec2(-5, -16), new Vec2(-12, -8)
                 ]);
 
@@ -32,7 +32,7 @@ class TestHeadbutt2D extends BuddySuite {
                         verts.push(new Vec2(a.x - b.x, a.y - b.y));
                     }
                 }
-                var md:Polygon2D = new Polygon2D(verts);
+                var md:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), verts);
                 
                 var dirs:Array<Vec2> = [
                     new Vec2(-1, 1), new Vec2(0, 1), new Vec2(1, 1),
@@ -48,11 +48,11 @@ class TestHeadbutt2D extends BuddySuite {
             });
 
             it('should detect collisions for two polygons which overlap', {
-                var shapeA:Polygon2D = new Polygon2D([
+                var shapeA:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(-18, -18), new Vec2(-10, -18),
                     new Vec2(-10, -13), new Vec2(-18, -13)
                 ]);
-                var shapeB:Polygon2D = new Polygon2D([
+                var shapeB:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(-14, -14), new Vec2(-5, -16), new Vec2(-12, -8)
                 ]);
 
@@ -61,11 +61,11 @@ class TestHeadbutt2D extends BuddySuite {
             });
 
             it('shouldn\'t detect collisions for two polygons which don\'t overlap', {
-                var shapeA:Polygon2D = new Polygon2D([
+                var shapeA:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(-18, -18), new Vec2(-10, -18),
                     new Vec2(-10, -13), new Vec2(-18, -13)
                 ]);
-                var shapeB:Polygon2D = new Polygon2D([
+                var shapeB:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(-9, -14), new Vec2(0, -16), new Vec2(-7, -8)
                 ]);
 
@@ -74,11 +74,11 @@ class TestHeadbutt2D extends BuddySuite {
             });
 
             it('shouldn\'t matter what order the polygons go in', {
-                var shapeA:Polygon2D = new Polygon2D([
+                var shapeA:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(-18, -18), new Vec2(-10, -18),
                     new Vec2(-10, -13), new Vec2(-18, -13)
                 ]);
-                var shapeB:Polygon2D = new Polygon2D([
+                var shapeB:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(-14, -14), new Vec2(-5, -16), new Vec2(-12, -8)
                 ]);
 
@@ -89,7 +89,7 @@ class TestHeadbutt2D extends BuddySuite {
             });
 
             it('should detect collisions between a shape and itself', {
-                var shapeA:Polygon2D = new Polygon2D([
+                var shapeA:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(-18, -18), new Vec2(-10, -18),
                     new Vec2(-10, -13), new Vec2(-18, -13)
                 ]);
@@ -98,10 +98,10 @@ class TestHeadbutt2D extends BuddySuite {
             });
 
             it('should detect collisions between two lines', {
-                var lineA:Polygon2D = new Polygon2D([
+                var lineA:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(-1, -1), new Vec2(1, 1)
                 ]);
-                var lineB:Polygon2D = new Polygon2D([
+                var lineB:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(-1, 1), new Vec2(1, -1)
                 ]);
 
@@ -110,11 +110,11 @@ class TestHeadbutt2D extends BuddySuite {
             });
 
             it('should detect collisions between a line and a polygon', {
-                var shapeA:Polygon2D = new Polygon2D([
+                var shapeA:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(-1, -1), new Vec2(1, -1),
                     new Vec2(1, 1), new Vec2(-1, 1)
                 ]);
-                var lineA:Polygon2D = new Polygon2D([
+                var lineA:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(-1, -1), new Vec2(1, 1)
                 ]);
 
@@ -124,10 +124,10 @@ class TestHeadbutt2D extends BuddySuite {
 
             it('should detect collisions between a line and a circle', {
                 var circ:Circle = new Circle(new Vec2(0, 0), 1);
-                var lineA:Polygon2D = new Polygon2D([
+                var lineA:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(-1, -1), new Vec2(1, 1)
                 ]);
-                var lineB:Polygon2D = new Polygon2D([
+                var lineB:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(-5, -5), new Vec2(-5, 5)
                 ]);
 
@@ -140,7 +140,7 @@ class TestHeadbutt2D extends BuddySuite {
 
             it('should detect collisions between a polygon and a circle', {
                 var circ:Circle = new Circle(new Vec2(0.25, 0), 1);
-                var square:Polygon2D = new Polygon2D([
+                var square:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(-1, -1), new Vec2(1, -1),
                     new Vec2(1, 1), new Vec2(-1, 1)
                 ]);
@@ -150,11 +150,11 @@ class TestHeadbutt2D extends BuddySuite {
             });
 
             it('should calculate the intersection of two boxes', {
-                var squareA:Polygon2D = new Polygon2D([
+                var squareA:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(-1, -1), new Vec2(1, -1),
                     new Vec2(1, 1), new Vec2(-1, 1)
                 ]);
-                var squareB:Polygon2D = new Polygon2D([
+                var squareB:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(0.25, -2.75), new Vec2(2.75, -2.75),
                     new Vec2(2.75, -0.75), new Vec2(0.25, -0.75)
                 ]);
@@ -171,18 +171,18 @@ class TestHeadbutt2D extends BuddySuite {
                 var intersection:Vec2 = hb.intersect(circA, circB);
 
                 // calculate the intersection manually
-                var ix:Float = circA.radius * Math.cos(Math.PI / 4) - (circB.radius * Math.cos(5 * Math.PI / 4) + circB.centre.x);
-                var iy:Float = circA.radius * Math.sin(Math.PI / 4) - (circB.radius * Math.sin(5 * Math.PI / 4) + circB.centre.y);
+                var ix:Float = circA.radius * Math.cos(Math.PI / 4) - (circB.radius * Math.cos(5 * Math.PI / 4) + circB.origin.x);
+                var iy:Float = circA.radius * Math.sin(Math.PI / 4) - (circB.radius * Math.sin(5 * Math.PI / 4) + circB.origin.y);
                 intersection.x.should.beCloseTo(ix);
                 intersection.y.should.beCloseTo(iy);
             });
 
             it('should calculate the intersection of a line and square', {
-                var square:Polygon2D = new Polygon2D([
+                var square:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(-1, -1), new Vec2(1, -1),
                     new Vec2(1, 1), new Vec2(-1, 1)
                 ]);
-                var line:Polygon2D = new Polygon2D([
+                var line:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(0.5, 0), new Vec2(3, 3)
                 ]);
 
@@ -192,10 +192,10 @@ class TestHeadbutt2D extends BuddySuite {
             });
 
             it('should calculate the intersection of two polygons', {
-                var pa:Polygon2D = new Polygon2D([
+                var pa:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(4, 11), new Vec2(9, 9), new Vec2(4, 5)
                 ]);
-                var pb:Polygon2D = new Polygon2D([
+                var pb:ConvexPolygon2D = new ConvexPolygon2D(new Vec2(0, 0), [
                     new Vec2(5, 7), new Vec2(12, 7),
                     new Vec2(10, 2), new Vec2(7, 3)
                 ]);
