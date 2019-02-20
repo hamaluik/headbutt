@@ -28,7 +28,7 @@ class Headbutt3D {
     private function evolveSimplex():EvolveResult {
         switch(vertices.length) {
             case 0: {
-                direction = shapeB.centre - shapeA.centre;
+                direction = shapeB.origin - shapeA.origin;
             }
             case 1: {
                 // flip the direction
