@@ -1,6 +1,8 @@
 import headbutt.threed.Headbutt;
 import headbutt.threed.shapes.Sphere;
 import headbutt.threed.shapes.Polyhedron;
+import headbutt.threed.shapes.Line;
+import headbutt.threed.shapes.Box;
 import buddy.*;
 using buddy.Should;
 import glm.Vec3;
@@ -81,6 +83,20 @@ class TestHeadbutt3D extends BuddySuite {
                     new Vec3( 1,  1, -1), new Vec3( 1,  1,  1)
                 ]);
                 var result:Bool = hb.test(s, p);
+                result.should.be(true);
+            });
+
+            it('should detect collisions between a line and a sphere', {
+                var line: Line = new Line(new Vec3(), new Vec3(5, 5, 5));
+                var sphere: Sphere = new Sphere(new Vec3(3, 3, 3), 1);
+                var result: Bool = hb.test(line, sphere);
+                result.should.be(true);
+            });
+
+            it('should detect collisions between two boxes', {
+                var boxA: Box = new Box(new Vec3(0, 0, 0), new Vec3(1, 1, 1));
+                var boxB: Box = new Box(new Vec3(0, 0.5, 0), new Vec3(1, 1, 1));
+                var result: Bool = hb.test(boxA, boxB);
                 result.should.be(true);
             });
 
