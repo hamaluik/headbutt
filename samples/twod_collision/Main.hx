@@ -1,7 +1,7 @@
 import glm.Vec2;
-import headbutt.shapes.Circle;
-import headbutt.shapes.Polygon2D;
-import headbutt.Headbutt2D;
+import headbutt.twod.shapes.Circle;
+import headbutt.twod.shapes.Polygon;
+import headbutt.twod.Headbutt;
 import js.Browser;
 import js.html.CanvasElement;
 import js.html.CanvasRenderingContext2D;
@@ -9,8 +9,8 @@ import js.html.CanvasRenderingContext2D;
 class Main {
     static var ctx:CanvasRenderingContext2D;
 
-    static var hb:Headbutt2D;
-    static var poly:Polygon2D;
+    static var hb:Headbutt;
+    static var poly:Polygon;
     static var circ:Circle;
     static var mouseCirc:Circle;
 
@@ -30,12 +30,10 @@ class Main {
         Browser.window.requestAnimationFrame(draw);
 
         mouseCirc = new Circle(new Vec2(100, 100), 16);
-        poly = new Polygon2D([
-            new Vec2(10, 10), new Vec2(100, 25), new Vec2(50, 75)
-        ]);
+        poly = new Polygon(new Vec2(0, 0), [new Vec2(10, 10), new Vec2(100, 25), new Vec2(50, 75)]);
         circ = new Circle(new Vec2(100, 150), 32);
 
-        hb = new Headbutt2D();
+        hb = new Headbutt();
 
         canvas.addEventListener('mousemove', onMouseMove);
         canvas.addEventListener('touchstart', onTouch);
@@ -53,21 +51,21 @@ class Main {
 
     static function moveCircle(x:Float, y:Float):Void {
         var rect:js.html.DOMRect = ctx.canvas.getBoundingClientRect();
-        mouseCirc.centre.x = x - rect.left;
-        mouseCirc.centre.y = y - rect.top;
+        mouseCirc.origin.x = x - rect.left;
+        mouseCirc.origin.y = y - rect.top;
     }
 
     static function draw(ts:Float) {
         var dt:Float = (ts - lastTime) / 1000;
         lastTime = ts;
 
-        circ.centre.x += circVelocity * dt;
-        if(circ.centre.x < circ.radius) {
-            circ.centre.x = circ.radius;
+        circ.origin.x += circVelocity * dt;
+        if(circ.origin.x < circ.radius) {
+            circ.origin.x = circ.radius;
             circVelocity = circSpeed;
         }
-        else if(circ.centre.x > ctx.canvas.clientWidth - circ.radius) {
-            circ.centre.x = ctx.canvas.clientWidth - circ.radius;
+        else if(circ.origin.x > ctx.canvas.clientWidth - circ.radius) {
+            circ.origin.x = ctx.canvas.clientWidth - circ.radius;
             circVelocity = -circSpeed;
         }
 
@@ -91,11 +89,11 @@ class Main {
         ctx.stroke();
 
         ctx.beginPath();
-        ctx.arc(circ.centre.x, circ.centre.y, circ.radius, 0, Math.PI * 2);
+        ctx.arc(circ.origin.x, circ.origin.y, circ.radius, 0, Math.PI * 2);
         ctx.stroke();
 
         ctx.beginPath();
-        ctx.arc(mouseCirc.centre.x, mouseCirc.centre.y, mouseCirc.radius, 0, Math.PI * 2);
+        ctx.arc(mouseCirc.origin.x, mouseCirc.origin.y, mouseCirc.radius, 0, Math.PI * 2);
         ctx.fillStyle = (intersectingPoly || intersectingCirc) ? '#46B39D' : '#DE5B49';
         ctx.fill();
 

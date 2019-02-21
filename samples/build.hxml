@@ -3,6 +3,7 @@
 -lib glm
 -lib closure
 -debug
+-dce no
 
 --each
 

@@ -10,14 +10,15 @@ import js.three.PerspectiveCamera;
 import js.three.WebGLRenderer;
 import js.three.GridHelper;
 
-import headbutt.Headbutt3D;
-import headbutt.shapes.Sphere;
-import headbutt.shapes.Polygon3D;
+import headbutt.threed.Headbutt;
+import headbutt.threed.shapes.Sphere;
+import headbutt.threed.shapes.Polyhedron;
+import headbutt.threed.shapes.Box;
 import glm.Vec3;
 
 class Main {
     public static function main() {
-        var hb:Headbutt3D = new Headbutt3D();
+        var hb:Headbutt = new Headbutt();
         
         // rendering stuff...
         var canvas:js.html.CanvasElement = cast(js.Browser.document.getElementById('canvas'));
@@ -29,12 +30,7 @@ class Main {
 		cube.position.set(0, 0, 0);
 		scene.add(cube);
 
-        var cubeShape:Polygon3D = new Polygon3D([
-            new Vec3(-25, -25, -25), new Vec3(-25, -25,  25),
-            new Vec3(-25,  25, -25), new Vec3(-25,  25,  25),
-            new Vec3( 25, -25, -25), new Vec3( 25, -25,  25),
-            new Vec3( 25,  25, -25), new Vec3( 25,  25,  25)
-        ]);
+        var cubeShape:Box = new Box(new Vec3(0, 0, 0), new Vec3(25, 25, 25));
 
         var sphere:Mesh = new Mesh(new SphereGeometry(20), new MeshLambertMaterial({color: 0x0000cc}));
         sphere.position.set(50, 0, 0);
@@ -77,9 +73,9 @@ class Main {
             sphere.position.y = 50 * Math.sin(2 * Math.PI * 2 * t * speed);
             sphere.position.z = 50 * Math.sin(2 * Math.PI * 4 * t * speed);
 
-            sphereShape.centre.x = sphere.position.x;
-            sphereShape.centre.y = sphere.position.y;
-            sphereShape.centre.z = sphere.position.z;
+            sphereShape.origin.x = sphere.position.x;
+            sphereShape.origin.y = sphere.position.y;
+            sphereShape.origin.z = sphere.position.z;
 
             var collision:Bool = hb.test(cubeShape, sphereShape);
             cubeMat.setValues({

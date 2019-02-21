@@ -1,7 +1,7 @@
 import glm.Vec2;
-import headbutt.shapes.Circle;
-import headbutt.shapes.Polygon2D;
-import headbutt.Headbutt2D;
+import headbutt.twod.shapes.Circle;
+import headbutt.twod.shapes.Polygon;
+import headbutt.twod.Headbutt;
 import js.Browser;
 import js.html.CanvasElement;
 import js.html.CanvasRenderingContext2D;
@@ -9,8 +9,8 @@ import js.html.CanvasRenderingContext2D;
 class Main {
     static var ctx:CanvasRenderingContext2D;
 
-    static var hb:Headbutt2D;
-    static var poly:Polygon2D;
+    static var hb:Headbutt;
+    static var poly:Polygon;
     static var circ:Circle;
     static var mouseCirc:Circle;
 
@@ -23,12 +23,13 @@ class Main {
         ctx = canvas.getContext2d();
         Browser.window.requestAnimationFrame(draw);
 
+        // initialize the shapes here
         mouseCirc = new Circle(new Vec2(100, 100), 16);
-        poly = new Polygon2D([
+        poly = new Polygon(new Vec2(), [
             new Vec2(110, 55), new Vec2(200, 62), new Vec2(150, 120)
         ]);
 
-        hb = new Headbutt2D();
+        hb = new Headbutt();
 
         canvas.addEventListener('mousemove', onMouseMove);
         canvas.addEventListener('touchstart', onTouch);
@@ -46,19 +47,21 @@ class Main {
 
     static function moveCircle(x:Float, y:Float):Void {
         var rect:js.html.DOMRect = ctx.canvas.getBoundingClientRect();
-        mouseCirc.centre.x = x - rect.left;
-        mouseCirc.centre.y = y - rect.top;
+        mouseCirc.origin.x = x - rect.left;
+        mouseCirc.origin.y = y - rect.top;
     }
 
     static function draw(ts:Float) {
         var dt:Float = (ts - lastTime) / 1000;
         lastTime = ts;
 
+        // calculate the intersection here
         var intersection:Vec2 = hb.intersect(poly, mouseCirc);
         if(intersection != null) {
-            Vec2.addVec(mouseCirc.centre, intersection, mouseCirc.centre);
+            Vec2.addVec(mouseCirc.origin, intersection, mouseCirc.origin);
         }
 
+        /// the rest is just drawing code
         ctx.canvas.width = ctx.canvas.clientWidth;
         ctx.canvas.height = ctx.canvas.clientHeight;
         ctx.clearRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
@@ -76,7 +79,7 @@ class Main {
         ctx.stroke();
 
         ctx.beginPath();
-        ctx.arc(mouseCirc.centre.x, mouseCirc.centre.y, mouseCirc.radius, 0, Math.PI * 2);
+        ctx.arc(mouseCirc.origin.x, mouseCirc.origin.y, mouseCirc.radius, 0, Math.PI * 2);
         ctx.fillStyle = '#46B39D';
         ctx.fill();
 
