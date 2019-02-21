@@ -32,8 +32,18 @@ class Headbutt {
     private var shapeA:Shape;
     private var shapeB:Shape;
 
+    /**
+       The maximum number of simplex evolution iterations before we accept the
+       given simplex. For non-curvy shapes, this can be low. Curvy shapes potentially
+       require higher numbers, but this can introduce significant slow-downs at
+       the gain of not much accuracy.
+    */
     public var maxIterations:Int = 20;
 
+    /**
+       Create a new Headbutt instance. Headbutt needs to be instantiated because
+       internally it stores state. This may change in the future.
+    */
     public function new() {}
 
     private function calculateSupport(direction:Vec2):Vec2 {
@@ -118,6 +128,12 @@ class Headbutt {
             : EvolveResult.NoIntersection;
     }
 
+    /**
+       Given two convex shapes, test whether they overlap or not
+       @param shapeA 
+       @param shapeB 
+       @return Bool
+    */
     public function test(shapeA:Shape, shapeB:Shape):Bool {
         // reset everything
         this.vertices = new Array<Vec2>();
@@ -166,6 +182,13 @@ class Headbutt {
         return new Edge(closestDistance, closestNormal, closestIndex);
     }
 
+    /**
+       Given two shapes, test whether they overlap or not. If they don't, returns
+       `null`. If they do, calculates the penetration vector and returns it.
+       @param shapeA 
+       @param shapeB 
+       @return Null<Vec2>
+    */
     public function intersect(shapeA:Shape, shapeB:Shape):Null<Vec2> {
         // first, calculate the base simplex
         if(!test(shapeA, shapeB)) {

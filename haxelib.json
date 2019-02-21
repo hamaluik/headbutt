@@ -5,8 +5,8 @@
   "classPath": "src",
   "tags": ["cross", "utility"],
   "description": "GJK and EPA based collision detection and intersection calculation",
-  "version": "0.3.0",
-  "releasenote": "Added 3D collision detection",
+  "version": "0.4.0",
+  "releasenote": "Normalized shapes API, added more default shapes",
   "contributors": ["FuzzyWuzzie"],
   "dependencies": {
       "glm": ""
