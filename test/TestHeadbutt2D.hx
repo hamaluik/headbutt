@@ -182,6 +182,23 @@ class TestHeadbutt2D extends BuddySuite {
                 intersection.x.should.be(0.5);
                 intersection.y.should.be(0);
             });
+
+            it('should collide between a rotated square and a not', {
+                var squareA: Rectangle = new Rectangle(new Vec2(1, 1));
+                var squareB: Rectangle = new Rectangle(new Vec2(1, 1));
+
+                squareB.set_trs(new Vec2(2.1, 0), 0, new Vec2(1, 1));
+                var hit: Bool = hb.test(squareA, squareB);
+                hit.should.be(false);
+
+                squareB.set_trs(new Vec2(2.1, 0), Math.PI / 4, new Vec2(1, 1));
+                var hit: Bool = hb.test(squareA, squareB);
+                hit.should.be(true);
+
+                squareB.set_trs(new Vec2(2.1, 0), 0, new Vec2(1.5, 1));
+                var hit: Bool = hb.test(squareA, squareB);
+                hit.should.be(true);
+            });
         });
     }
 }
