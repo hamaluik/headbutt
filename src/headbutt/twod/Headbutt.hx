@@ -73,7 +73,7 @@ class Headbutt {
     private function evolveSimplex():EvolveResult {
         switch(vertices.length) {
             case 0: {
-                direction = shapeB.origin - shapeA.origin;
+                direction = shapeB.centre - shapeA.centre;
             }
             case 1: {
                 // flip the direction
@@ -91,10 +91,6 @@ class Headbutt {
             }
             case 3: {
                 // calculate if the simplex contains the origin
-                /*var a:Vec2 = vertices[2];
-                var b:Vec2 = vertices[1];
-                var c:Vec2 = vertices[0];*/
-
                 var c0:Vec2 = vertices[2] * -1;
                 var bc:Vec2 = vertices[1] - vertices[2];
                 var ca:Vec2 = vertices[0] - vertices[2];

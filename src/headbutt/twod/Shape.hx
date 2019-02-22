@@ -3,10 +3,7 @@ package headbutt.twod;
 import glm.Vec2;
 
 interface Shape {
-    /**
-       The origin / centre of the shape.
-    */
-    public var origin(get, set): Vec2;
+    public var centre(get, never): Vec2;
 
     /**
        Given a direction in global coordinates, return the vertex (in global coordinates)
