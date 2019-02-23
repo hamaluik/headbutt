@@ -93,6 +93,24 @@ class TestHeadbutt3D extends BuddySuite {
                 o.x.should.be(-1);
             });
 
+            it('should detect collisions for two polyhedrons which overlap', {
+                var a:Polyhedron = new Polyhedron([
+                    new Vec3(-1, -1, -1), new Vec3(-1, -1,  1),
+                    new Vec3(-1,  1, -1), new Vec3(-1,  1,  1),
+                    new Vec3( 1, -1, -1), new Vec3( 1, -1,  1),
+                    new Vec3( 1,  1, -1), new Vec3( 1,  1,  1)
+                ]);
+                var b:Polyhedron = new Polyhedron([
+                    new Vec3(-1, -1, -1), new Vec3(-1, -1,  1),
+                    new Vec3(-1,  1, -1), new Vec3(-1,  1,  1),
+                    new Vec3( 1, -1, -1), new Vec3( 1, -1,  1),
+                    new Vec3( 1,  1, -1), new Vec3( 1,  1,  1)
+                ]);
+
+                var result:Bool = hb.test(a, b);
+                result.should.be(true);
+            });
+
             it('shouldn\'t detect collisions for two polyhedrons which don\'t overlap', {
                 var a:Polyhedron = new Polyhedron([
                     new Vec3(-1, -1, -1), new Vec3(-1, -1,  1),
@@ -106,9 +124,17 @@ class TestHeadbutt3D extends BuddySuite {
                     new Vec3( 1, -1, -1), new Vec3( 1, -1,  1),
                     new Vec3( 1,  1, -1), new Vec3( 1,  1,  1)
                 ]);
-                b.set_trs(new Vec3(5, 5, 5), Quat.identity(new Quat()), new Vec3(1, 1, 1));
+                b.set_trs(new Vec3(5, 0, 0), Quat.identity(new Quat()), new Vec3(1, 1, 1));
 
                 var result:Bool = hb.test(a, b);
+                result.should.be(false);
+            });
+
+            it('should detect collisions for two spheres which overlap', {
+                var sa:Sphere = new Sphere(new Vec3(0, 0, 0), 1);
+                var sb:Sphere = new Sphere(new Vec3(1.75, 1.75, 1.75), 1);
+
+                var result:Bool = hb.test(sa, sb);
                 result.should.be(false);
             });
 
