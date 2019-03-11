@@ -115,3 +115,14 @@ class Headbutt {
     public function test(a: Shape, b: Shape): Bool;
 }
 ```
+
+## Benchmarks
+
+| Test | Intersect | Headbutt (μs/iter) | Differ (μs/iter) |
+|:-----|:---------:|---------:|-------:|
+| line/line | ✔ | 17.6 ± 0.4 | 1.1 ± 0 |
+| line/line | ✗ | 11.2 ± 0.5 | 0.9 ± 0 |
+| circ/circ | ✔ | 21.7 ± 0.2 | 3 ± 0 |
+| circ/circ | ✗ | 4.8 ± 0.1 | 1.6 ± 0 |
+| pent/pent | ✔ | 41.3 ± 0.4 | 31.5 ± 0.3 |
+| pent/pent | ✗ | 11.6 ± 0.1 | 7.4 ± 0 |
