@@ -1,0 +1,20 @@
+-cp src
+-lib glm
+
+headbutt.twod.Shape
+headbutt.twod.shapes.Circle
+headbutt.twod.shapes.Line
+headbutt.twod.shapes.Rectangle
+headbutt.twod.shapes.Polygon
+headbutt.twod.Headbutt
+headbutt.threed.Shape
+headbutt.threed.shapes.Sphere
+headbutt.threed.shapes.Line
+headbutt.threed.shapes.Box
+headbutt.threed.shapes.Polyhedron
+headbutt.threed.Headbutt
+
+-xml dox.xml
+
+--next
+-cmd haxelib run dox -i . -o docs --title "Headbutt" --toplevel-package "headbutt" -D version "0.5.0" -D source-path "https://github.com/hamaluik/headbutt/tree/master/src" -D description "A GJK and EPA collision engine made with pure Haxe."
