@@ -42,13 +42,6 @@ private enum PolygonWinding {
     CounterClockwise;
 }
 
-typedef TestResult = {
-    simplex: Array<Vec2>,
-    colliding: Bool,
-    shapeA: Shape,
-    shapeB: Shape,
-};
-
 /**
  Implementations of the GJK and EPA algorithms
 **/
@@ -70,7 +63,7 @@ class Headbutt {
     /**
      How accurate do intersection calculations need to be when using expanding polytopes
     **/
-    public static var INTERSECTION_EPSILON: Float = 0.00000001;
+    public static var INTERSECTION_EPSILON: Float = 0.00001;
 
     function new() {}
 
@@ -169,12 +162,12 @@ class Headbutt {
             result = evolveSimplex(vertices, shapeA, shapeB, direction);
             iterations++;
         }
-        return {
-            simplex: vertices,
-            colliding: result == EvolveResult.FoundIntersection,
-            shapeA: shapeA,
-            shapeB: shapeB,
-        };
+        return new TestResult(
+            result == EvolveResult.FoundIntersection,
+            vertices,
+            shapeA,
+            shapeB
+        );
     }
 
     static function findClosestEdge(vertices: Array<Vec2>, winding: PolygonWinding): Edge {

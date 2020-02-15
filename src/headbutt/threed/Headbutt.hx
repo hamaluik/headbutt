@@ -25,39 +25,30 @@ private enum EvolveResult {
 }
 
 class Headbutt {
-    var vertices: Array<Vec3>;
-    var direction: Vec3;
-    var shapeA: Shape;
-    var shapeB: Shape;
-
     /**
        The maximum number of simplex evolution iterations before we accept the
        given simplex. For non-curvy shapes, this can be low. Curvy shapes potentially
        require higher numbers, but this can introduce significant slow-downs at
        the gain of not much accuracy.
     */
-    public var maxIterations: Int = 20;
+    public static var MAX_ITERATIONS: Int = 20;
 
-    /**
-       Create a new Headbutt instance. Headbutt needs to be instantiated because
-       internally it stores state. This may change in the future.
-    */
-    public function new() {}
+    function new() {}
 
-    function calculateSupport(direction: Vec3): Vec3 {
+    static function calculateSupport(shapeA: Shape, shapeB: Shape, direction: Vec3): Vec3 {
         var oppositeDirection: Vec3 = direction.multiplyScalar(-1, new Vec3());
         var newVertex: Vec3 = shapeA.support(direction).copy(new Vec3());
         newVertex.subtractVec(shapeB.support(oppositeDirection), newVertex);
         return newVertex;
     }
 
-    function addSupport(direction: Vec3): Bool {
-        var newVertex: Vec3 = calculateSupport(direction);
+    static function addSupport(vertices: Array<Vec3>, shapeA: Shape, shapeB: Shape, direction: Vec3): Bool {
+        var newVertex: Vec3 = calculateSupport(shapeA, shapeB, direction);
         vertices.push(newVertex);
         return Vec3.dot(direction, newVertex) >= 0;
     }
 
-    function evolveSimplex(): EvolveResult {
+    static function evolveSimplex(vertices: Array<Vec3>, shapeA: Shape, shapeB: Shape, direction: Vec3): EvolveResult {
         switch(vertices.length) {
             case 0: {
                 direction = shapeB.centre - shapeA.centre;
@@ -151,7 +142,7 @@ class Headbutt {
             case _: throw 'Can\'t have simplex with ${vertices.length} verts!';
         }
 
-        return addSupport(direction)
+        return addSupport(vertices, shapeA, shapeB, direction)
             ? EvolveResult.StillEvolving
             : EvolveResult.NoIntersection;
     }
@@ -162,20 +153,23 @@ class Headbutt {
        @param shapeB 
        @return Bool
     */
-    public function test(shapeA: Shape, shapeB: Shape): Bool {
-        // reset everything
-        this.vertices = new Array<Vec3>();
-        this.shapeA = shapeA;
-        this.shapeB = shapeB;
+    public static function test(shapeA: Shape, shapeB: Shape): Bool {
+        var vertices: Array<Vec3> = [];
+        var direction: Vec3 = new Vec3();
 
         // do the actual test
         var result: EvolveResult = EvolveResult.StillEvolving;
         var iterations: Int = 0;
-        while(iterations < maxIterations && result == EvolveResult.StillEvolving) {
-            result = evolveSimplex();
+        while(iterations < MAX_ITERATIONS && result == EvolveResult.StillEvolving) {
+            result = evolveSimplex(vertices, shapeA, shapeB, direction);
             iterations++;
         }
 
-        return result == EvolveResult.FoundIntersection;
+        return new TestResult(
+            result == EvolveResult.FoundIntersection,
+            vertices,
+            shapeA,
+            shapeB
+        );
     }
 }

@@ -55,7 +55,7 @@ class TestHeadbutt2D extends BuddySuite {
                 ]);
                 shapeB.setTransform(new Vec2(0.5, 0.5), 0, new Vec2(1, 1));
 
-                var result: Bool = Headbutt.test(shapeA, shapeB).colliding;
+                var result: Bool = Headbutt.test(shapeA, shapeB);
                 result.should.be(true);
             });
 
@@ -70,7 +70,7 @@ class TestHeadbutt2D extends BuddySuite {
                 ]);
                 shapeB.setTransform(new Vec2(5, 0), 0, new Vec2(1, 1));
 
-                var result: Bool = Headbutt.test(shapeA, shapeB).colliding;
+                var result: Bool = Headbutt.test(shapeA, shapeB);
                 result.should.be(false);
             });
 
@@ -85,8 +85,8 @@ class TestHeadbutt2D extends BuddySuite {
                 ]);
                 shapeB.setTransform(new Vec2(0.5, 0.5), 0, new Vec2(1, 1));
 
-                var resultA: Bool = Headbutt.test(shapeA, shapeB).colliding;
-                var resultB: Bool = Headbutt.test(shapeB, shapeA).colliding;
+                var resultA: Bool = Headbutt.test(shapeA, shapeB);
+                var resultB: Bool = Headbutt.test(shapeB, shapeA);
                 resultA.should.be(true);
                 resultB.should.be(true);
             });
@@ -96,7 +96,7 @@ class TestHeadbutt2D extends BuddySuite {
                     new Vec2(-1,  1), new Vec2( 1,  1),
                     new Vec2(-1, -1), new Vec2( 1, -1)
                 ]);
-                var result: Bool = Headbutt.test(shapeA, shapeA).colliding;
+                var result: Bool = Headbutt.test(shapeA, shapeA);
                 result.should.be(true);
             });
 
@@ -104,7 +104,7 @@ class TestHeadbutt2D extends BuddySuite {
                 var lineA = new Line(new Vec2(-1, -1), new Vec2(1, 1));
                 var lineB = new Line(new Vec2(-1, 1), new Vec2(1, -1));
 
-                var result: Bool = Headbutt.test(lineA, lineA).colliding;
+                var result: Bool = Headbutt.test(lineA, lineA);
                 result.should.be(true);
             });
 
@@ -115,7 +115,7 @@ class TestHeadbutt2D extends BuddySuite {
                 ]);
                 var lineA = new Line(new Vec2(-1, -1), new Vec2(1, 1));
 
-                var result: Bool = Headbutt.test(shapeA, lineA).colliding;
+                var result: Bool = Headbutt.test(shapeA, lineA);
                 result.should.be(true);
             });
 
@@ -124,8 +124,8 @@ class TestHeadbutt2D extends BuddySuite {
                 var lineA = new Line(new Vec2(-1, -1), new Vec2(1, 1));
                 var lineB = new Line(new Vec2(-5, -5), new Vec2(-4, -4));
 
-                var resultA: Bool = Headbutt.test(circ, lineA).colliding;
-                var resultB: Bool = Headbutt.test(circ, lineB).colliding;
+                var resultA: Bool = Headbutt.test(circ, lineA);
+                var resultB: Bool = Headbutt.test(circ, lineB);
 
                 resultA.should.be(true);
                 resultB.should.be(false);
@@ -138,7 +138,7 @@ class TestHeadbutt2D extends BuddySuite {
                     new Vec2(1, 1), new Vec2(-1, 1)
                 ]);
 
-                var result: Bool = Headbutt.test(circ, square).colliding;
+                var result: Bool = Headbutt.test(circ, square);
                 result.should.be(true);
             });
 

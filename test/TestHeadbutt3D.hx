@@ -14,11 +14,6 @@ import glm.Vec4;
 class TestHeadbutt3D extends BuddySuite {
     public function new() {
         describe('Using Headbutt 3D', {
-            var hb:Headbutt;
-            beforeEach({
-                hb = new Headbutt();
-            });
-
             it('should detect collisions for two polyhedrons which overlap', {
                 var a:Polyhedron = new Polyhedron([
                     new Vec3(-1, -1, -1), new Vec3(-1, -1,  1),
@@ -33,7 +28,7 @@ class TestHeadbutt3D extends BuddySuite {
                     new Vec3( 0.5,  1, -1), new Vec3( 0.5,  1,  1)
                 ]);
 
-                var result:Bool = hb.test(a, b);
+                var result:Bool = Headbutt.test(a, b);
                 result.should.be(true);
             });
 
@@ -41,7 +36,7 @@ class TestHeadbutt3D extends BuddySuite {
                 var sa:Sphere = new Sphere(new Vec3(0, 0, 0), 1);
                 var sb:Sphere = new Sphere(new Vec3(0.5, 0.5, 0.5), 1);
 
-                var result:Bool = hb.test(sa, sb);
+                var result:Bool = Headbutt.test(sa, sb);
                 result.should.be(true);
             });
 
@@ -107,7 +102,7 @@ class TestHeadbutt3D extends BuddySuite {
                     new Vec3( 1,  1, -1), new Vec3( 1,  1,  1)
                 ]);
 
-                var result:Bool = hb.test(a, b);
+                var result:Bool = Headbutt.test(a, b);
                 result.should.be(true);
             });
 
@@ -125,7 +120,7 @@ class TestHeadbutt3D extends BuddySuite {
                     new Vec3( 0,  1,  0),
                 ]);
                 b.setTransform(new Vec3(5, 0, 0), Quat.identity(new Quat()), new Vec3(1, 1, 1));
-                var result:Bool = hb.test(a, b);
+                var result:Bool = Headbutt.test(a, b);
                 result.should.be(false);
             });
 
@@ -133,7 +128,7 @@ class TestHeadbutt3D extends BuddySuite {
                 var sa:Sphere = new Sphere(new Vec3(0, 0, 0), 1);
                 var sb:Sphere = new Sphere(new Vec3(1.75, 1.75, 1.75), 1);
 
-                var result:Bool = hb.test(sa, sb);
+                var result:Bool = Headbutt.test(sa, sb);
                 result.should.be(false);
             });
 
@@ -141,13 +136,13 @@ class TestHeadbutt3D extends BuddySuite {
                 var sa:Sphere = new Sphere(new Vec3(0, 0, 0), 1);
                 var sb:Sphere = new Sphere(new Vec3(2, 2, 2), 1);
 
-                var result:Bool = hb.test(sa, sb);
+                var result:Bool = Headbutt.test(sa, sb);
                 result.should.be(false);
             });
 
             it('should detect collisions between a shape and itself', {
                 var s:Sphere = new Sphere(new Vec3(0, 0, 0), 1);
-                var result:Bool = hb.test(s, s);
+                var result:Bool = Headbutt.test(s, s);
                 result.should.be(true);
             });
 
@@ -159,14 +154,14 @@ class TestHeadbutt3D extends BuddySuite {
                     new Vec3( 1, -1, -1), new Vec3( 1, -1,  1),
                     new Vec3( 1,  1, -1), new Vec3( 1,  1,  1)
                 ]);
-                var result:Bool = hb.test(s, p);
+                var result:Bool = Headbutt.test(s, p);
                 result.should.be(true);
             });
 
             it('should detect collisions between a line and a sphere', {
                 var line: Line = new Line(new Vec3(), new Vec3(5, 5, 5));
                 var sphere: Sphere = new Sphere(new Vec3(3, 3, 3), 1);
-                var result: Bool = hb.test(line, sphere);
+                var result: Bool = Headbutt.test(line, sphere);
                 result.should.be(true);
             });
 
@@ -174,7 +169,7 @@ class TestHeadbutt3D extends BuddySuite {
                 var boxA: Box = new Box(new Vec3(1, 1, 1));
                 var boxB: Box = new Box(new Vec3(1, 1, 1));
                 boxB.setTransform(new Vec3(0, 0.5, 0), Quat.identity(new Quat()), new Vec3(1, 1, 1));
-                var result: Bool = hb.test(boxA, boxB);
+                var result: Bool = Headbutt.test(boxA, boxB);
                 result.should.be(true);
             });
 
