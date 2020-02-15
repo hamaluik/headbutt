@@ -47,7 +47,7 @@ class TestHeadbutt3D extends BuddySuite {
 
             it('should calculate supports properly', {
                 var a: Polyhedron = new Polyhedron([new Vec3(0, 0, 0)]);
-                a.set_trs(new Vec3(1, 0, 0), Quat.identity(new Quat()), new Vec3(1, 1, 1));
+                a.setTransform(new Vec3(1, 0, 0), Quat.identity(new Quat()), new Vec3(1, 1, 1));
                 var m: Mat4 = a.transform;
                 var vi: Vec4 = new Vec4(0, 0, 0, 1);
                 var vo: Vec4 = Mat4.multVec(m, vi, new Vec4());
@@ -63,7 +63,7 @@ class TestHeadbutt3D extends BuddySuite {
                     new Vec3( 1, -1, -1), new Vec3( 1, -1,  1),
                     new Vec3( 1,  1, -1), new Vec3( 1,  1,  1)
                 ]);
-                b.set_trs(new Vec3(5, 5, 5), Quat.identity(new Quat()), new Vec3(1, 1, 1));
+                b.setTransform(new Vec3(5, 5, 5), Quat.identity(new Quat()), new Vec3(1, 1, 1));
 
                 var o: Vec3 = b.support(new Vec3(1, 1, 1));
                 o.x.should.be(6);
@@ -124,7 +124,7 @@ class TestHeadbutt3D extends BuddySuite {
                     new Vec3( 1, -1,  1),
                     new Vec3( 0,  1,  0),
                 ]);
-                b.set_trs(new Vec3(5, 0, 0), Quat.identity(new Quat()), new Vec3(1, 1, 1));
+                b.setTransform(new Vec3(5, 0, 0), Quat.identity(new Quat()), new Vec3(1, 1, 1));
                 var result:Bool = hb.test(a, b);
                 result.should.be(false);
             });
@@ -173,7 +173,7 @@ class TestHeadbutt3D extends BuddySuite {
             it('should detect collisions between two boxes', {
                 var boxA: Box = new Box(new Vec3(1, 1, 1));
                 var boxB: Box = new Box(new Vec3(1, 1, 1));
-                boxB.set_trs(new Vec3(0, 0.5, 0), Quat.identity(new Quat()), new Vec3(1, 1, 1));
+                boxB.setTransform(new Vec3(0, 0.5, 0), Quat.identity(new Quat()), new Vec3(1, 1, 1));
                 var result: Bool = hb.test(boxA, boxB);
                 result.should.be(true);
             });

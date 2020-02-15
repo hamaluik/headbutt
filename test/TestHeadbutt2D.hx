@@ -61,7 +61,7 @@ class TestHeadbutt2D extends BuddySuite {
                     new Vec2(-1,  1), new Vec2( 1,  1),
                     new Vec2(-1, -1), new Vec2( 1, -1)
                 ]);
-                shapeB.set_trs(new Vec2(0.5, 0.5), 0, new Vec2(1, 1));
+                shapeB.setTransform(new Vec2(0.5, 0.5), 0, new Vec2(1, 1));
 
                 var result:Bool = hb.test(shapeA, shapeB);
                 result.should.be(true);
@@ -76,7 +76,7 @@ class TestHeadbutt2D extends BuddySuite {
                     new Vec2(-1,  1), new Vec2( 1,  1),
                     new Vec2(-1, -1), new Vec2( 1, -1)
                 ]);
-                shapeB.set_trs(new Vec2(5, 0), 0, new Vec2(1, 1));
+                shapeB.setTransform(new Vec2(5, 0), 0, new Vec2(1, 1));
 
                 var result:Bool = hb.test(shapeA, shapeB);
                 result.should.be(false);
@@ -91,7 +91,7 @@ class TestHeadbutt2D extends BuddySuite {
                     new Vec2(-1,  1), new Vec2( 1,  1),
                     new Vec2(-1, -1), new Vec2( 1, -1)
                 ]);
-                shapeB.set_trs(new Vec2(0.5, 0.5), 0, new Vec2(1, 1));
+                shapeB.setTransform(new Vec2(0.5, 0.5), 0, new Vec2(1, 1));
 
                 var resultA:Bool = hb.test(shapeA, shapeB);
                 var resultB:Bool = hb.test(shapeB, shapeA);
@@ -151,9 +151,9 @@ class TestHeadbutt2D extends BuddySuite {
             });
 
             it('should calculate the intersection of two rectangles', {
-                var squareA: Rectangle = new Rectangle(new Vec2(1, 1));
-                var squareB: Rectangle = new Rectangle(new Vec2(1, 1));
-                squareB.set_trs(new Vec2(1.5, 0), 0, new Vec2(1, 1));
+                var squareA: Rectangle = new Rectangle(new Vec2(2, 2));
+                var squareB: Rectangle = new Rectangle(new Vec2(2, 2));
+                squareB.setTransform(new Vec2(1.5, 0), 0, new Vec2(1, 1));
 
                 var intersection:Null<Vec2> = hb.intersect(squareA, squareB);
                 intersection.should.not.be(null);
@@ -175,7 +175,7 @@ class TestHeadbutt2D extends BuddySuite {
             });
 
             it('should calculate the intersection of a line and square', {
-                var square: Rectangle = new Rectangle(new Vec2(1, 1));
+                var square: Rectangle = new Rectangle(new Vec2(2, 2));
                 var line: Line = new Line(new Vec2(0.5, 0), new Vec2(3.5, 3));
 
                 var intersection:Vec2 = hb.intersect(square, line);
@@ -184,18 +184,18 @@ class TestHeadbutt2D extends BuddySuite {
             });
 
             it('should collide between a rotated square and a not', {
-                var squareA: Rectangle = new Rectangle(new Vec2(1, 1));
-                var squareB: Rectangle = new Rectangle(new Vec2(1, 1));
+                var squareA: Rectangle = new Rectangle(new Vec2(2, 2));
+                var squareB: Rectangle = new Rectangle(new Vec2(2, 2));
 
-                squareB.set_trs(new Vec2(2.1, 0), 0, new Vec2(1, 1));
+                squareB.setTransform(new Vec2(2.1, 0), 0, new Vec2(1, 1));
                 var hit: Bool = hb.test(squareA, squareB);
                 hit.should.be(false);
 
-                squareB.set_trs(new Vec2(2.1, 0), Math.PI / 4, new Vec2(1, 1));
+                squareB.setTransform(new Vec2(2.1, 0), Math.PI / 4, new Vec2(1, 1));
                 var hit: Bool = hb.test(squareA, squareB);
                 hit.should.be(true);
 
-                squareB.set_trs(new Vec2(2.1, 0), 0, new Vec2(1.5, 1));
+                squareB.setTransform(new Vec2(2.1, 0), 0, new Vec2(1.5, 1));
                 var hit: Bool = hb.test(squareA, squareB);
                 hit.should.be(true);
             });

@@ -21,7 +21,7 @@ class TestShapes2D extends BuddySuite {
             });
 
             it('should calculate moved centres when transformed', {
-                p.set_trs(new Vec2(0, 3), 0, new Vec2(1, 1));
+                p.setTransform(new Vec2(0, 3), 0, new Vec2(1, 1));
                 var c: Vec2 = p.centre;
                 c.x.should.beCloseTo(0);
                 c.y.should.beCloseTo(3);
@@ -38,7 +38,7 @@ class TestShapes2D extends BuddySuite {
             });
 
             it('should calculate support vertices when translated', {
-                p.set_trs(new Vec2(0, 3), 0, new Vec2(1, 1));
+                p.setTransform(new Vec2(0, 3), 0, new Vec2(1, 1));
                 
                 var support: Vec2 = p.support(new Vec2(0, 1));
                 support.x.should.beCloseTo(0);
@@ -46,7 +46,7 @@ class TestShapes2D extends BuddySuite {
             });
 
             it('should calculate support vertices when rotated', {
-                p.set_trs(new Vec2(0, 0), Math.PI / 2, new Vec2(1, 1));
+                p.setTransform(new Vec2(0, 0), Math.PI / 2, new Vec2(1, 1));
                 
                 var support: Vec2 = p.support(new Vec2(-1, 0));
                 support.x.should.beCloseTo(-1);
@@ -57,11 +57,11 @@ class TestShapes2D extends BuddySuite {
         describe('Using A Rectangle', {
             var r: Rectangle;
             beforeEach({
-                r = new Rectangle(new Vec2(0.5, 0.5));
+                r = new Rectangle(new Vec2(1, 1));
             });
 
             it('should calculate moved centres when transformed', {
-                r.set_trs(new Vec2(0, 3), 0, new Vec2(1, 1));
+                r.setTransform(new Vec2(0, 3), 0, new Vec2(1, 1));
                 var c: Vec2 = r.centre;
                 c.x.should.beCloseTo(0);
                 c.y.should.beCloseTo(3);
@@ -74,7 +74,7 @@ class TestShapes2D extends BuddySuite {
             });
 
             it('should calculate support vertices when translated', {
-                r.set_trs(new Vec2(0, 3), 0, new Vec2(1, 1));
+                r.setTransform(new Vec2(0, 3), 0, new Vec2(1, 1));
                 
                 var support: Vec2 = r.support(new Vec2(1, 1));
                 support.x.should.beCloseTo(0.5);
@@ -82,7 +82,7 @@ class TestShapes2D extends BuddySuite {
             });
 
             it('should calculate support vertices when rotated', {
-                r.set_trs(new Vec2(0, 0), Math.PI / 4, new Vec2(1, 1));
+                r.setTransform(new Vec2(0, 0), Math.PI / 4, new Vec2(1, 1));
                 
                 var support: Vec2 = r.support(new Vec2(0, 1));
                 support.x.should.beCloseTo(0.0);

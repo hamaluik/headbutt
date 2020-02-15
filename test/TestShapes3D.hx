@@ -24,7 +24,7 @@ class TestShapes3D extends BuddySuite {
             });
 
             it('should calculate moved centres when transformed', {
-                p.set_trs(new Vec3(0, 3, 4), Quat.identity(new Quat()), new Vec3(1, 1, 1));
+                p.setTransform(new Vec3(0, 3, 4), Quat.identity(new Quat()), new Vec3(1, 1, 1));
                 var c: Vec3 = p.centre;
                 c.x.should.beCloseTo(0);
                 c.y.should.beCloseTo(3);
@@ -44,7 +44,7 @@ class TestShapes3D extends BuddySuite {
             });
 
             it('should calculate support vertices when translated', {
-                p.set_trs(new Vec3(0, 3, 0), Quat.identity(new Quat()), new Vec3(1, 1, 1));
+                p.setTransform(new Vec3(0, 3, 0), Quat.identity(new Quat()), new Vec3(1, 1, 1));
                 
                 var support: Vec3 = p.support(new Vec3(0, 1, 0));
                 support.x.should.beCloseTo(0);
@@ -53,7 +53,7 @@ class TestShapes3D extends BuddySuite {
             });
 
             it('should calculate support vertices when rotated', {
-                p.set_trs(new Vec3(0, 0, 0), Quat.fromEuler(Math.PI, 0, 0, new Quat()), new Vec3(1, 1, 1));
+                p.setTransform(new Vec3(0, 0, 0), Quat.fromEuler(Math.PI, 0, 0, new Quat()), new Vec3(1, 1, 1));
                 
                 var support: Vec3 = p.support(new Vec3(0, -1, 0));
                 support.x.should.beCloseTo(0);
@@ -65,11 +65,11 @@ class TestShapes3D extends BuddySuite {
         describe('Using A Box', {
             var b: Box;
             beforeEach({
-                b = new Box(new Vec3(0.5, 0.5, 0.5));
+                b = new Box(new Vec3(1, 1, 1));
             });
 
             it('should calculate moved centres when transformed', {
-                b.set_trs(new Vec3(0, 3, 4), Quat.identity(new Quat()), new Vec3(1, 1, 1));
+                b.setTransform(new Vec3(0, 3, 4), Quat.identity(new Quat()), new Vec3(1, 1, 1));
                 var c: Vec3 = b.centre;
                 c.x.should.beCloseTo(0);
                 c.y.should.beCloseTo(3);
@@ -84,7 +84,7 @@ class TestShapes3D extends BuddySuite {
             });
 
             it('should calculate support vertices when translated', {
-                b.set_trs(new Vec3(0, 3, 4), Quat.identity(new Quat()), new Vec3(1, 1, 1));
+                b.setTransform(new Vec3(0, 3, 4), Quat.identity(new Quat()), new Vec3(1, 1, 1));
                 
                 var support: Vec3 = b.support(new Vec3(1, 1, 1));
                 support.x.should.beCloseTo(0.5);
@@ -93,7 +93,7 @@ class TestShapes3D extends BuddySuite {
             });
 
             it('should calculate support vertices when rotated', {
-                b.set_trs(new Vec3(0, 0, 0), Quat.fromEuler(Math.PI, 0, 0, new Quat()), new Vec3(1, 1, 1));
+                b.setTransform(new Vec3(0, 0, 0), Quat.fromEuler(Math.PI, 0, 0, new Quat()), new Vec3(1, 1, 1));
                 
                 var support: Vec3 = b.support(new Vec3(-1, -1, -1));
                 support.x.should.beCloseTo(-0.5);

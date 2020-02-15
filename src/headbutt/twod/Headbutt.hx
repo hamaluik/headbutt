@@ -1,36 +1,52 @@
+/*
+ * Apache License, Version 2.0
+ *
+ * Copyright (c) 2020 Kenton Hamaluik
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package headbutt.twod;
 
 import glm.Vec3;
 using glm.Vec2;
 
-class Edge {
-    public var distance:Float;
-    public var normal:Vec2;
-    public var index:Int;
+private class Edge {
+    public var distance: Float;
+    public var normal: Vec2;
+    public var index: Int;
 
-    public function new(distance:Float, normal:Vec2, index:Int) {
+    public function new(distance: Float, normal: Vec2, index: Int) {
         this.distance = distance;
         this.normal = normal;
         this.index = index;
     }
 }
 
-enum EvolveResult {
+private enum EvolveResult {
     NoIntersection;
     FoundIntersection;
     StillEvolving;
 }
 
-enum PolygonWinding {
+private enum PolygonWinding {
     Clockwise;
     CounterClockwise;
 }
 
 class Headbutt {
-    private var vertices:Array<Vec2>;
-    private var direction:Vec2;
-    private var shapeA:Shape;
-    private var shapeB:Shape;
+    private var vertices: Array<Vec2>;
+    private var direction: Vec2;
+    private var shapeA: Shape;
+    private var shapeB: Shape;
 
     /**
        The maximum number of simplex evolution iterations before we accept the
@@ -38,7 +54,7 @@ class Headbutt {
        require higher numbers, but this can introduce significant slow-downs at
        the gain of not much accuracy.
     */
-    public var maxIterations:Int = 20;
+    public var maxIterations: Int = 20;
 
     /**
        Create a new Headbutt instance. Headbutt needs to be instantiated because
@@ -46,31 +62,31 @@ class Headbutt {
     */
     public function new() {}
 
-    private function calculateSupport(direction:Vec2):Vec2 {
-        var oppositeDirection:Vec2 = direction.multiplyScalar(-1, new Vec2());
-        var newVertex:Vec2 = shapeA.support(direction).copy(new Vec2());
+    private function calculateSupport(direction: Vec2): Vec2 {
+        var oppositeDirection: Vec2 = direction.multiplyScalar(-1, new Vec2());
+        var newVertex: Vec2 = shapeA.support(direction).copy(new Vec2());
         newVertex.subtractVec(shapeB.support(oppositeDirection), newVertex);
         return newVertex;
     }
 
-    private function addSupport(direction:Vec2):Bool {
-        var newVertex:Vec2 = calculateSupport(direction);
+    private function addSupport(direction: Vec2): Bool {
+        var newVertex: Vec2 = calculateSupport(direction);
         vertices.push(newVertex);
         return Vec2.dot(direction, newVertex) >= 0;
     }
 
-    function tripleProduct(a:Vec2, b:Vec2, c:Vec2):Vec2 {
-        var A:Vec3 = new Vec3(a.x, a.y, 0);
-        var B:Vec3 = new Vec3(b.x, b.y, 0);
-        var C:Vec3 = new Vec3(c.x, c.y, 0);
+    function tripleProduct(a: Vec2, b: Vec2, c: Vec2): Vec2 {
+        var A: Vec3 = new Vec3(a.x, a.y, 0);
+        var B: Vec3 = new Vec3(b.x, b.y, 0);
+        var C: Vec3 = new Vec3(c.x, c.y, 0);
 
-        var first:Vec3 = Vec3.cross(A, B, new Vec3());
-        var second:Vec3 = Vec3.cross(first, C, new Vec3());
+        var first: Vec3 = Vec3.cross(A, B, new Vec3());
+        var second: Vec3 = Vec3.cross(first, C, new Vec3());
 
         return new Vec2(second.x, second.y);
     }
 
-    private function evolveSimplex():EvolveResult {
+    private function evolveSimplex(): EvolveResult {
         switch(vertices.length) {
             case 0: {
                 direction = shapeB.centre - shapeA.centre;
@@ -81,9 +97,9 @@ class Headbutt {
             }
             case 2: {
                 // line ab is the line formed by the first two vertices
-                var ab:Vec2 = vertices[1] - vertices[0];
+                var ab: Vec2 = vertices[1] - vertices[0];
                 // line a0 is the line from the first vertex to the origin
-                var a0:Vec2 = vertices[0] * -1;
+                var a0: Vec2 = vertices[0] * -1;
 
                 // use the triple-cross-product to calculate a direction perpendicular
                 // to line ab in the direction of the origin
@@ -91,12 +107,12 @@ class Headbutt {
             }
             case 3: {
                 // calculate if the simplex contains the origin
-                var c0:Vec2 = vertices[2] * -1;
-                var bc:Vec2 = vertices[1] - vertices[2];
-                var ca:Vec2 = vertices[0] - vertices[2];
+                var c0: Vec2 = vertices[2] * -1;
+                var bc: Vec2 = vertices[1] - vertices[2];
+                var ca: Vec2 = vertices[0] - vertices[2];
 
-                var bcNorm:Vec2 = tripleProduct(ca, bc, bc);
-                var caNorm:Vec2 = tripleProduct(bc, ca, ca);
+                var bcNorm: Vec2 = tripleProduct(ca, bc, bc);
+                var caNorm: Vec2 = tripleProduct(bc, ca, ca);
 
                 if(bcNorm.dot(c0) > 0) {
                     // the origin is outside line bc
@@ -130,15 +146,15 @@ class Headbutt {
        @param shapeB 
        @return Bool
     */
-    public function test(shapeA:Shape, shapeB:Shape):Bool {
+    public function test(shapeA: Shape, shapeB: Shape): Bool {
         // reset everything
         this.vertices = new Array<Vec2>();
         this.shapeA = shapeA;
         this.shapeB = shapeB;
 
         // do the actual test
-        var result:EvolveResult = EvolveResult.StillEvolving;
-        var iterations:Int = 0;
+        var result: EvolveResult = EvolveResult.StillEvolving;
+        var iterations: Int = 0;
         while(iterations < maxIterations && result == EvolveResult.StillEvolving) {
             result = evolveSimplex();
             iterations++;
@@ -146,28 +162,28 @@ class Headbutt {
         return result == EvolveResult.FoundIntersection;
     }
 
-    private function findClosestEdge(winding:PolygonWinding):Edge {
-        var closestDistance:Float = Math.POSITIVE_INFINITY;
-        var closestNormal:Vec2 = new Vec2();
-        var closestIndex:Int = 0;
-        var line:Vec2 = new Vec2();
+    private function findClosestEdge(winding: PolygonWinding): Edge {
+        var closestDistance: Float = Math.POSITIVE_INFINITY;
+        var closestNormal: Vec2 = new Vec2();
+        var closestIndex: Int = 0;
+        var line: Vec2 = new Vec2();
         for(i in 0...vertices.length) {
-            var j:Int = i + 1;
+            var j: Int = i + 1;
             if(j >= vertices.length) j = 0;
 
             vertices[j].copy(line);
             line.subtractVec(vertices[i], line);
 
-            var norm:Vec2 = switch(winding) {
-                case PolygonWinding.Clockwise:
+            var norm: Vec2 = switch(winding) {
+                case PolygonWinding.Clockwise: 
                     new Vec2(line.y, -line.x);
-                case PolygonWinding.CounterClockwise:
+                case PolygonWinding.CounterClockwise: 
                     new Vec2(-line.y, line.x);
             }
             norm.normalize(norm);
 
             // calculate how far away the edge is from the origin
-            var dist:Float = norm.dot(vertices[i]);
+            var dist: Float = norm.dot(vertices[i]);
             if(dist < closestDistance) {
                 closestDistance = dist;
                 closestNormal = norm;
@@ -185,7 +201,7 @@ class Headbutt {
        @param shapeB 
        @return Null<Vec2>
     */
-    public function intersect(shapeA:Shape, shapeB:Shape):Null<Vec2> {
+    public function intersect(shapeA: Shape, shapeB: Shape): Null<Vec2> {
         // first, calculate the base simplex
         if(!test(shapeA, shapeB)) {
             // if we're not intersecting, return null
@@ -193,18 +209,18 @@ class Headbutt {
         }
 
         // calculate the winding of the existing simplex
-        var e0:Float = (vertices[1].x - vertices[0].x) * (vertices[1].y + vertices[0].y);
-        var e1:Float = (vertices[2].x - vertices[1].x) * (vertices[2].y + vertices[1].y);
-        var e2:Float = (vertices[0].x - vertices[2].x) * (vertices[0].y + vertices[2].y);
-        var winding:PolygonWinding =
+        var e0: Float = (vertices[1].x - vertices[0].x) * (vertices[1].y + vertices[0].y);
+        var e1: Float = (vertices[2].x - vertices[1].x) * (vertices[2].y + vertices[1].y);
+        var e2: Float = (vertices[0].x - vertices[2].x) * (vertices[0].y + vertices[2].y);
+        var winding: PolygonWinding =
             if(e0 + e1 + e2 >= 0) PolygonWinding.Clockwise;
             else PolygonWinding.CounterClockwise;
 
-        var intersection:Vec2 = new Vec2();
+        var intersection: Vec2 = new Vec2();
         for(i in 0...32) {
-            var edge:Edge = findClosestEdge(winding);
-            var support:Vec2 = calculateSupport(edge.normal);
-            var distance:Float = support.dot(edge.normal);
+            var edge: Edge = findClosestEdge(winding);
+            var support: Vec2 = calculateSupport(edge.normal);
+            var distance: Float = support.dot(edge.normal);
 
             intersection = edge.normal.copy(intersection);
             intersection.multiplyScalar(distance, intersection);
