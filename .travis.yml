@@ -6,7 +6,7 @@ env:
     - TARGET=interp
 
 haxe:
-  - "3.4.2"
+  - stable
   - development
 
 matrix:
