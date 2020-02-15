@@ -1,6 +1,0 @@
--lib glm
--lib differ
--cp bench
--cp src
--main Main
---interp

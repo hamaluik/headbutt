@@ -1,0 +1,20 @@
+-lib glm
+-lib differ
+-cp bench
+-cp src
+-main Main
+
+--each
+--js bin/bench.js
+
+--next
+--hl bin/bench.hl
+
+--next
+--python bin/bench.py
+
+--next
+--cpp bin/bench
+
+--next
+--interp
