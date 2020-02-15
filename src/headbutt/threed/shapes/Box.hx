@@ -57,7 +57,7 @@ class Box implements TransformableShape {
     }
 
     function get_centre(): Vec3 {
-        return new Vec3(this._transform.r0c2, this._transform.r1c2);
+        return new Vec3(this._transform.r0c3, this._transform.r1c3, this._transform.r2c3);
     }
 
     function get_transform(): Mat4 {
@@ -84,15 +84,15 @@ class Box implements TransformableShape {
             vi.y = v.y;
             vi.z = v.z;
             vo = Mat4.multVec(this._transform, vi, vo);
-            vd.x = vo.x;
-            vd.y = vo.y;
-            vd.z = vo.z;
+            vd.x = vo.x / vo.w;
+            vd.y = vo.y / vo.w;
+            vd.z = vo.z / vo.w;
             var distance: Float = Vec3.dot(vd, direction);
             if(distance > furthestDistance) {
                 furthestDistance = distance;
-                furthestVertex.x = vo.x;
-                furthestVertex.y = vo.y;
-                furthestVertex.z = vo.z;
+                furthestVertex.x = vd.x;
+                furthestVertex.y = vd.y;
+                furthestVertex.z = vd.z;
             }
         }
 

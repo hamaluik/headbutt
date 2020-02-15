@@ -113,19 +113,18 @@ class TestHeadbutt3D extends BuddySuite {
 
             it('shouldn\'t detect collisions for two polyhedrons which don\'t overlap', {
                 var a:Polyhedron = new Polyhedron([
-                    new Vec3(-1, -1, -1), new Vec3(-1, -1,  1),
-                    new Vec3(-1,  1, -1), new Vec3(-1,  1,  1),
-                    new Vec3( 1, -1, -1), new Vec3( 1, -1,  1),
-                    new Vec3( 1,  1, -1), new Vec3( 1,  1,  1)
+                    new Vec3(-1, -1, -1),
+                    new Vec3( 1, -1, -1),
+                    new Vec3( 1, -1,  1),
+                    new Vec3( 0,  1,  0),
                 ]);
                 var b:Polyhedron = new Polyhedron([
-                    new Vec3(-1, -1, -1), new Vec3(-1, -1,  1),
-                    new Vec3(-1,  1, -1), new Vec3(-1,  1,  1),
-                    new Vec3( 1, -1, -1), new Vec3( 1, -1,  1),
-                    new Vec3( 1,  1, -1), new Vec3( 1,  1,  1)
+                    new Vec3(-1, -1, -1),
+                    new Vec3( 1, -1, -1),
+                    new Vec3( 1, -1,  1),
+                    new Vec3( 0,  1,  0),
                 ]);
                 b.set_trs(new Vec3(5, 0, 0), Quat.identity(new Quat()), new Vec3(1, 1, 1));
-
                 var result:Bool = hb.test(a, b);
                 result.should.be(false);
             });
