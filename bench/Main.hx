@@ -67,7 +67,6 @@ class Main {
     }
 
     public static function main(): Void {
-        var hb = new Headbutt();
         println('| Test | Intersect | Headbutt (μs/iter) |');
         println('|:-----|:---------:|---------:|-------:|');
 
@@ -77,13 +76,13 @@ class Main {
 
         var line_line_int_hb = new Benchmark();
         line_line_int_hb.run(function() {
-            hb.test(lineA, lineB);
+            Headbutt.test(lineA, lineB);
         });
         println('| line/line | ✔ | ${line_line_int_hb.toString()} |');
 
         var line_line_noint_hb = new Benchmark();
         line_line_noint_hb.run(function() {
-            hb.test(lineA, lineC);
+            Headbutt.test(lineA, lineC);
         });
         println('| line/line | ✗ | ${line_line_noint_hb.toString()} |');
 
@@ -93,31 +92,31 @@ class Main {
 
         var circ_circ_int_hb = new Benchmark();
         circ_circ_int_hb.run(function() {
-            hb.test(circleA, circleB);
+            Headbutt.test(circleA, circleB);
         });
         println('| circ/circ | ✔ | ${circ_circ_int_hb.toString()} |');
 
         var circ_circ_noint_hb = new Benchmark();
         circ_circ_noint_hb.run(function() {
-            hb.test(circleA, circleC);
+            Headbutt.test(circleA, circleC);
         });
         println('| circ/circ | ✗ | ${circ_circ_noint_hb.toString()} |');
 
         var pentA = new headbutt.twod.shapes.Polygon([new Vec2(0, 1), new Vec2(1, 0.5), new Vec2(1, -1), new Vec2(-1, -1), new Vec2(-1, 0.5)]);
         var pentB = new headbutt.twod.shapes.Polygon([new Vec2(0, 1), new Vec2(1, 0.5), new Vec2(1, -1), new Vec2(-1, -1), new Vec2(-1, 0.5)]);
-        pentB.set_trs(new Vec2(0.5, 0), 0, new Vec2(1, 1));
+        pentB.setTransform(new Vec2(0.5, 0), 0, new Vec2(1, 1));
         var pentC = new headbutt.twod.shapes.Polygon([new Vec2(0, 1), new Vec2(1, 0.5), new Vec2(1, -1), new Vec2(-1, -1), new Vec2(-1, 0.5)]);
-        pentC.set_trs(new Vec2(5, 0), 0, new Vec2(1, 1));
+        pentC.setTransform(new Vec2(5, 0), 0, new Vec2(1, 1));
 
         var pent_pent_int_hb = new Benchmark();
         pent_pent_int_hb.run(function() {
-            hb.test(pentA, pentB);
+            Headbutt.test(pentA, pentB);
         });
         println('| pent/pent | ✔ | ${pent_pent_int_hb.toString()} |');
 
         var pent_pent_noint_hb = new Benchmark();
         pent_pent_noint_hb.run(function() {
-            hb.test(pentA, pentC);
+            Headbutt.test(pentA, pentC);
         });
         println('| pent/pent | ✗ | ${pent_pent_noint_hb.toString()} |');
     }

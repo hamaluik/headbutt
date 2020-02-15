@@ -1,3 +1,4 @@
+import headbutt.twod.IntersectResult;
 import glm.Vec3;
 import glm.Mat3;
 import headbutt.twod.Headbutt;
@@ -147,32 +148,32 @@ class TestHeadbutt2D extends BuddySuite {
                 var squareB: Rectangle = new Rectangle(new Vec2(2, 2));
                 squareB.setTransform(new Vec2(1.5, 0), 0, new Vec2(1, 1));
 
-                var intersection: Null<Vec2> = Headbutt.intersect(Headbutt.test(squareA, squareB));
-                intersection.should.not.be(null);
-                intersection.x.should.beCloseTo(0.5);
-                intersection.y.should.beCloseTo(0);
+                var result: Null<IntersectResult> = Headbutt.intersect(Headbutt.test(squareA, squareB));
+                result.should.not.be(null);
+                result.intersection.x.should.beCloseTo(0.5);
+                result.intersection.y.should.beCloseTo(0);
             });
 
             it('should calculate the intersection of two circles', {
                 var circA: Circle = new Circle(new Vec2(0, 0), 1);
                 var circB: Circle = new Circle(new Vec2(1, 1), 0.5);
                 
-                var intersection: Null<Vec2> = Headbutt.intersect(Headbutt.test(circA, circB));
+                var result: Null<IntersectResult> = Headbutt.intersect(Headbutt.test(circA, circB));
 
                 // calculate the intersection manually
                 var ix: Float = circA.radius * Math.cos(Math.PI / 4) - (circB.radius * Math.cos(5 * Math.PI / 4) + circB.centre.x);
                 var iy: Float = circA.radius * Math.sin(Math.PI / 4) - (circB.radius * Math.sin(5 * Math.PI / 4) + circB.centre.y);
-                intersection.x.should.beCloseTo(ix);
-                intersection.y.should.beCloseTo(iy);
+                result.intersection.x.should.beCloseTo(ix);
+                result.intersection.y.should.beCloseTo(iy);
             });
 
             it('should calculate the intersection of a line and square', {
                 var square: Rectangle = new Rectangle(new Vec2(2, 2));
                 var line: Line = new Line(new Vec2(0.5, 0), new Vec2(3.5, 3));
 
-                var intersection: Null<Vec2> = Headbutt.intersect(Headbutt.test(square, line));
-                intersection.x.should.be(0.5);
-                intersection.y.should.be(0);
+                var result: Null<IntersectResult> = Headbutt.intersect(Headbutt.test(square, line));
+                result.intersection.x.should.be(0.5);
+                result.intersection.y.should.be(0);
             });
 
             it('should collide between a rotated square and a not', {

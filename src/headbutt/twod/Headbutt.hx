@@ -206,9 +206,9 @@ class Headbutt {
        Given two shapes, test whether they overlap or not. If they don't, returns
        `null`. If they do, calculates the penetration vector and returns it.
        @param testResult The return value from `test`
-       @return Null<Vec2>
+       @return Null<IntersectResult>
     */
-    public static function intersect(testResult: TestResult): Null<Vec2> {
+    public static function intersect(testResult: TestResult): Null<IntersectResult> {
         if(!testResult.colliding) {
             // if we're not intersecting, return null
             return null;
@@ -232,13 +232,24 @@ class Headbutt {
             Vec2.multiplyScalar(intersection, distance, intersection);
 
             if(Math.abs(distance - edge.distance) <= INTERSECTION_EPSILON) {
-                return intersection;
+                return new IntersectResult(intersection, testResult.shapeA, testResult.shapeB);
             }
             else {
                 testResult.simplex.insert(edge.index, support);
             }
         }
 
-        return intersection;
+        return new IntersectResult(intersection, testResult.shapeA, testResult.shapeB);
+    }
+
+    /**
+     Shortcut for calling `intersect(test(...))`, will return `null` if the shapes
+     **aren't** colliding, otherwise will return how the shapes overlap
+     @param shapeA 
+     @param shapeB 
+     @return Null<IntersectResult>
+    **/
+    inline public static function testAndIntersect(shapeA: Shape, shapeB: Shape): Null<IntersectResult> {
+        return intersect(test(shapeA, shapeB));
     }
 }

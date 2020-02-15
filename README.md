@@ -20,24 +20,31 @@ Create either 2D shapes or 3D shapes by implementing the appropriate interface: 
   * `Box`
   * `Polyhedron`
 
-Then, instantiate an instance of the appropriate `Headbutt`:
+Apply generic transformations to shapes:
 
 ```haxe
-var hb2 = new headbutt.twod.Headbutt();
-var hb3 = new headbutt.threed.Headbutt();
+var box = new Box(new Vec3(0.5, 0.5, 0.5));
+box.transform = GLM.transform(
+  new Vec3(5, -1, 3), // translation
+  Quat.fromEuler(Math.PI / 4, 0, Math.PI / 3, new Quat()), // rotation
+  new Vec3(2, 1, 4) // scale
+);
 ```
 
-Next, check shapes for intersections:
+Then, check shapes for intersections:
 
 ```haxe
-if(hb2.test(shapeA, shapeB)) { /*...*/ }
-if(hb3.test(objectA, objectB)) { /*...*/ }
+if(headbutt.twod.Headbutt.test(shapeA, shapeB)) { /*...*/ }
+if(headbutt.threed.Headbutt.test(objectA, objectB)) { /*...*/ }
 ```
 
 Alternatively, calculate intersections (**note:** intersection calculations haven't been implemented in 3D yet!):
 
 ```haxe
-var penetration: Null<Vec2> = hb2.intersect(shapeA, shapeB);
+var testResult = headbutt.twod.Headbutt.test(shapeA, shapeB);
+var intersection = headbutt.twod.Headbutt.intersect(testResult);
+// or:
+var intersection = headbutt.twod.Headbutt.testAndIntersect(shapeA, shapeB);
 ```
 
 ## API

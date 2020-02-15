@@ -5,8 +5,8 @@
   "classPath": "src",
   "tags": ["cross", "utility"],
   "description": "GJK and EPA based collision detection and intersection calculation",
-  "version": "0.5.0",
-  "releasenote": "Added transforms to shapes",
+  "version": "0.6.0",
+  "releasenote": "Changed Headbutt interface to use static pure public functions",
   "contributors": ["hamaluik"],
   "dependencies": {
       "glm": ""
