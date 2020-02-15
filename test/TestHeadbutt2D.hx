@@ -1,3 +1,5 @@
+import glm.Vec3;
+import glm.Mat3;
 import headbutt.twod.Headbutt;
 import headbutt.twod.shapes.Polygon;
 import headbutt.twod.shapes.Circle;
@@ -17,11 +19,11 @@ class TestHeadbutt2D extends BuddySuite {
             });
 
             it('should calculate Minkowski difference supports with polygons', {
-                var shapeA:Polygon = new Polygon(new Vec2(0, 0), [
+                var shapeA:Polygon = new Polygon([
                     new Vec2(-1,  1), new Vec2( 1,  1),
                     new Vec2(-1, -1), new Vec2( 1, -1)
                 ]);
-                var shapeB:Polygon = new Polygon(new Vec2(0, 0), [
+                var shapeB:Polygon = new Polygon([
                     new Vec2(-1,  1), new Vec2( 1,  1),
                     new Vec2(-1, -1), new Vec2( 1, -1)
                 ]);
@@ -35,7 +37,7 @@ class TestHeadbutt2D extends BuddySuite {
                         verts.push(new Vec2(a.x - b.x, a.y - b.y));
                     }
                 }
-                var md:Polygon = new Polygon(new Vec2(0, 0), verts);
+                var md:Polygon = new Polygon(verts);
                 
                 var dirs:Array<Vec2> = [
                     new Vec2(-1, 1), new Vec2(0, 1), new Vec2(1, 1),
@@ -51,42 +53,45 @@ class TestHeadbutt2D extends BuddySuite {
             });
 
             it('should detect collisions for two polygons which overlap', {
-                var shapeA:Polygon = new Polygon(new Vec2(0, 0), [
+                var shapeA:Polygon = new Polygon([
                     new Vec2(-1,  1), new Vec2( 1,  1),
                     new Vec2(-1, -1), new Vec2( 1, -1)
                 ]);
-                var shapeB:Polygon = new Polygon(new Vec2(0.5, 0.5), [
+                var shapeB:Polygon = new Polygon([
                     new Vec2(-1,  1), new Vec2( 1,  1),
                     new Vec2(-1, -1), new Vec2( 1, -1)
                 ]);
+                shapeB.set_trs(new Vec2(0.5, 0.5), 0, new Vec2(1, 1));
 
                 var result:Bool = hb.test(shapeA, shapeB);
                 result.should.be(true);
             });
 
             it('shouldn\'t detect collisions for two polygons which don\'t overlap', {
-                var shapeA:Polygon = new Polygon(new Vec2(0, 0), [
+                var shapeA:Polygon = new Polygon([
                     new Vec2(-1,  1), new Vec2( 1,  1),
                     new Vec2(-1, -1), new Vec2( 1, -1)
                 ]);
-                var shapeB:Polygon = new Polygon(new Vec2(5, 0), [
+                var shapeB:Polygon = new Polygon([
                     new Vec2(-1,  1), new Vec2( 1,  1),
                     new Vec2(-1, -1), new Vec2( 1, -1)
                 ]);
+                shapeB.set_trs(new Vec2(5, 0), 0, new Vec2(1, 1));
 
                 var result:Bool = hb.test(shapeA, shapeB);
                 result.should.be(false);
             });
 
             it('shouldn\'t matter what order the polygons go in', {
-                var shapeA:Polygon = new Polygon(new Vec2(0, 0), [
+                var shapeA:Polygon = new Polygon([
                     new Vec2(-1,  1), new Vec2( 1,  1),
                     new Vec2(-1, -1), new Vec2( 1, -1)
                 ]);
-                var shapeB:Polygon = new Polygon(new Vec2(0.5, 0.5), [
+                var shapeB:Polygon = new Polygon([
                     new Vec2(-1,  1), new Vec2( 1,  1),
                     new Vec2(-1, -1), new Vec2( 1, -1)
                 ]);
+                shapeB.set_trs(new Vec2(0.5, 0.5), 0, new Vec2(1, 1));
 
                 var resultA:Bool = hb.test(shapeA, shapeB);
                 var resultB:Bool = hb.test(shapeB, shapeA);
@@ -95,7 +100,7 @@ class TestHeadbutt2D extends BuddySuite {
             });
 
             it('should detect collisions between a shape and itself', {
-                var shapeA:Polygon = new Polygon(new Vec2(0, 0), [
+                var shapeA:Polygon = new Polygon([
                     new Vec2(-1,  1), new Vec2( 1,  1),
                     new Vec2(-1, -1), new Vec2( 1, -1)
                 ]);
@@ -112,7 +117,7 @@ class TestHeadbutt2D extends BuddySuite {
             });
 
             it('should detect collisions between a line and a polygon', {
-                var shapeA:Polygon = new Polygon(new Vec2(0, 0), [
+                var shapeA:Polygon = new Polygon([
                     new Vec2(-1, -1), new Vec2(1, -1),
                     new Vec2(1, 1), new Vec2(-1, 1)
                 ]);
@@ -136,7 +141,7 @@ class TestHeadbutt2D extends BuddySuite {
 
             it('should detect collisions between a polygon and a circle', {
                 var circ:Circle = new Circle(new Vec2(0.25, 0), 1);
-                var square:Polygon = new Polygon(new Vec2(0, 0), [
+                var square:Polygon = new Polygon([
                     new Vec2(-1, -1), new Vec2(1, -1),
                     new Vec2(1, 1), new Vec2(-1, 1)
                 ]);
@@ -146,8 +151,9 @@ class TestHeadbutt2D extends BuddySuite {
             });
 
             it('should calculate the intersection of two rectangles', {
-                var squareA: Rectangle = new Rectangle(new Vec2(0, 0), new Vec2(1, 1));
-                var squareB: Rectangle = new Rectangle(new Vec2(1.5, 0), new Vec2(1, 1));
+                var squareA: Rectangle = new Rectangle(new Vec2(1, 1));
+                var squareB: Rectangle = new Rectangle(new Vec2(1, 1));
+                squareB.set_trs(new Vec2(1.5, 0), 0, new Vec2(1, 1));
 
                 var intersection:Null<Vec2> = hb.intersect(squareA, squareB);
                 intersection.should.not.be(null);
@@ -162,19 +168,36 @@ class TestHeadbutt2D extends BuddySuite {
                 var intersection:Vec2 = hb.intersect(circA, circB);
 
                 // calculate the intersection manually
-                var ix:Float = circA.radius * Math.cos(Math.PI / 4) - (circB.radius * Math.cos(5 * Math.PI / 4) + circB.origin.x);
-                var iy:Float = circA.radius * Math.sin(Math.PI / 4) - (circB.radius * Math.sin(5 * Math.PI / 4) + circB.origin.y);
+                var ix:Float = circA.radius * Math.cos(Math.PI / 4) - (circB.radius * Math.cos(5 * Math.PI / 4) + circB.centre.x);
+                var iy:Float = circA.radius * Math.sin(Math.PI / 4) - (circB.radius * Math.sin(5 * Math.PI / 4) + circB.centre.y);
                 intersection.x.should.beCloseTo(ix);
                 intersection.y.should.beCloseTo(iy);
             });
 
             it('should calculate the intersection of a line and square', {
-                var square: Rectangle = new Rectangle(new Vec2(0, 0), new Vec2(1, 1));
+                var square: Rectangle = new Rectangle(new Vec2(1, 1));
                 var line: Line = new Line(new Vec2(0.5, 0), new Vec2(3.5, 3));
 
                 var intersection:Vec2 = hb.intersect(square, line);
                 intersection.x.should.be(0.5);
                 intersection.y.should.be(0);
+            });
+
+            it('should collide between a rotated square and a not', {
+                var squareA: Rectangle = new Rectangle(new Vec2(1, 1));
+                var squareB: Rectangle = new Rectangle(new Vec2(1, 1));
+
+                squareB.set_trs(new Vec2(2.1, 0), 0, new Vec2(1, 1));
+                var hit: Bool = hb.test(squareA, squareB);
+                hit.should.be(false);
+
+                squareB.set_trs(new Vec2(2.1, 0), Math.PI / 4, new Vec2(1, 1));
+                var hit: Bool = hb.test(squareA, squareB);
+                hit.should.be(true);
+
+                squareB.set_trs(new Vec2(2.1, 0), 0, new Vec2(1.5, 1));
+                var hit: Bool = hb.test(squareA, squareB);
+                hit.should.be(true);
             });
         });
     }

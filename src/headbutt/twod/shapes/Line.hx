@@ -4,6 +4,8 @@ using glm.Vec2;
 import headbutt.twod.Shape;
 
 class Line implements Shape {
+    public var centre(get, never): Vec2;
+
     /**
        Start is in global coordinates
     */
@@ -14,29 +16,16 @@ class Line implements Shape {
     */
     public var end: Vec2;
 
-    private var _origin: Vec2 = new Vec2(0, 0);
-    public var origin(get, set): Vec2;
-
     public function new(start: Vec2, end: Vec2) {
         this.start = start;
         this.end = end;
     }
 
-    function get_origin(): Vec2 {
-        _origin.x = (start.x + end.x) / 2;
-        _origin.y = (start.y + end.y) / 2;
-        return _origin;
-    }
-
-    function set_origin(origin: Vec2): Vec2 {
-        var dx: Float = origin.x - _origin.x;
-        var dy: Float = origin.y - _origin.y;
-        start.x += dx;
-        end.x += dx;
-        start.y += dy;
-        end.y += dy;
-
-        return _origin = origin;
+    function get_centre(): Vec2 {
+        return new Vec2(
+            (start.x + end.x) / 2,
+            (start.y + end.y) / 2
+        );
     }
 
     public function support(direction: Vec2): Vec2 {

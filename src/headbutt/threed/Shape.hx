@@ -6,7 +6,7 @@ interface Shape {
     /**
        The origin / centre of the shape.
     */
-    public var origin(get, set):Vec3;
+    public var centre(get, never):Vec3;
 
     /**
        Given a direction in global coordinates, return the vertex (in global coordinates)
