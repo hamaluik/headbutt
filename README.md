@@ -53,14 +53,22 @@ var intersection = headbutt.twod.Headbutt.testAndIntersect(shapeA, shapeB);
 
 ## Benchmarks
 
-Benchmarks were run for each target using the results from `haxe bench.hxml`. The
-benchmarks were collected on a Ryzen 3600 CPU with 32 GB of DDR4 3200 MHz ram.
+Benchmarks were run for the Node / Javascript target using `haxe bench.hxml`. The
+benchmarks were collected on an Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz with
+16 GB of DDR4 RAM, running Linux Manjaro 19.0.0.
 
-| Test | Intersect | Cpp (μs/iter) | Hashlink (μs/iter) | Node/Javascript (μs/iter) | Python (μs/iter) | Interp (μs/iter) |
-|:-----|:---------:|---------:|-------:|-------:|-------:|-------:|
-| line/line | ✔ |0.5 ± 0.1 | 4.4 ± 0.1 | 0.3 ± 1.1 | 18.6 ± 0.1 | 10.8 ± 0.1 |
-| line/line | ✗ | 0.3 ± 0 | 2.5 ± 0.1 | 0.2 ± 0.6 | 12 ± 0.1 | 6.8 ± 0 |
-| circ/circ | ✔ | 0.5 ± 0.1 | 5.5 ± 0.1 | 0.3 ± 0.9 | 23.8 ± 0.1 | 12.8 ± 0.1 |
-| circ/circ | ✗ | 0.2 ± 0 | 0.9 ± 0 | 0.1 ± 0.3 | 4.5 ± 0.1 | 2.6 ± 0 |
-| pent/pent | ✔ | 0.6 ± 0.1 | 7.5 ± 0.1 | 0.4 ± 1.1 | 55.4 ± 0.2 | 24.5 ± 0.1 |
-| pent/pent | ✗ | 0.2 ± 0 | 1.9 ± 0 | 0.1 ± 0.3 | 15.1 ± 0.3 | 6.7 ± 0 |
+| Benchmark                              |         Mean Time / Iteration |
+|:---------------------------------------|------------------------------:|
+| 2D test line/line intersect            | `162.654 [ns] ±   2.982 [ns]` |
+| 2D test line/line no intersect         | `126.105 [ns] ±   2.486 [ns]` |
+| 2D test circle/circle intersect        | `246.520 [ns] ±   5.394 [ns]` |
+| 2D test circle/circle no intersect     | ` 78.339 [ns] ±   1.650 [ns]` |
+| 2D test pentagon/pentagon intersect    | `392.746 [ns] ±   2.768 [ns]` |
+| 2D test pentagon/pentagon no intersect | `126.104 [ns] ±   1.947 [ns]` |
+| 2D intersect line/line                 | `337.045 [ns] ±   2.785 [ns]` |
+| 2D intersect circle/circle             | ` 11.901 [μs] ±  86.617 [ns]` |
+| 2D intersect pentagon/pentagon         | `  1.916 [μs] ±   8.471 [ns]` |
+| 3D test sphere/sphere intersect        | `201.095 [ns] ±   2.095 [ns]` |
+| 3D test sphere/sphere no intersect     | ` 69.234 [ns] ±   1.347 [ns]` |
+| 3D test box/box intersect              | `194.634 [ns] ±   1.847 [ns]` |
+| 3D test box/box no intersect           | `983.447 [ns] ±   7.303 [ns]` |

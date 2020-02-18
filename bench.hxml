@@ -1,20 +1,10 @@
 -lib glm
--lib differ
+-lib benched
 -cp bench
 -cp src
--main Main
-
+-main BenchMain
 --each
+
+-lib hxnodejs
 --js bin/bench.js
-
---next
---hl bin/bench.hl
-
---next
---python bin/bench.py
-
---next
---cpp bin/bench
-
---next
---interp
+--cmd node bin/bench.js
